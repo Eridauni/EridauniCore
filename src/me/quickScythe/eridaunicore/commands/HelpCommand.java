@@ -17,7 +17,7 @@ public class HelpCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("help")) {
-			sender.sendMessage(Utils.colorize("&e&lHelp &f>&7 If you need help please ask an Mod or higher, or submit a request with &f\"request\"&7."));
+			sender.sendMessage(Utils.colorize("&e&lHelp &f>&7 If you need help please ask an Mod or higher, or submit a request with &f\"/request\"&7."));
 		}
 		return true;
 	}

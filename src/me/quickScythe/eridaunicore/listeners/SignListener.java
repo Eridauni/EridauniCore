@@ -1,11 +1,11 @@
-package me.skyGeneral.modeHub.signs;
+package me.quickScythe.eridaunicore.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import me.skyGeneral.modeHub.Main;
-import me.skyGeneral.modeHub.utils.Utils;
+import me.quickScythe.eridaunicore.Main;
+import me.quickScythe.eridaunicore.utils.Utils;
 
 public class SignListener implements Listener {
 	Main plugin;
