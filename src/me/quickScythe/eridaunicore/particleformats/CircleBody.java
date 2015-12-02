@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 
 import me.quickScythe.eridaunicore.utils.Utils;
 
-public class CircleHead implements Runnable {
+public class CircleBody implements Runnable {
 	Player player;
 	Location l;
 	Location l2;
-	public CircleHead(Player player){
+	public CircleBody(Player player){
 		this.player = player;
 	}
 	
@@ -32,8 +32,8 @@ public class CircleHead implements Runnable {
 		l = Utils.getCircleLocation(Utils.getParticleTimer(player), 1.0, player.getEyeLocation());
 		l2 = Utils.getCircleLocationBackwards(Utils.getParticleTimer(player), 1.0, player.getEyeLocation());
 		
-		l.setY(l.getY()+0.5);
-		l2.setY(l2.getY()+0.5);
+		l.setY(l.getY()-0.5);
+		l2.setY(l2.getY()-0.5);
 		
 		Utils.displayParticle(player, l, players);
 		Utils.displayParticle(player, l2, players);

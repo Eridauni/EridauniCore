@@ -24,6 +24,7 @@ import me.quickScythe.eridaunicore.core.Gamer;
 import me.quickScythe.eridaunicore.core.MainTimer;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.OrdinaryColor;
+import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleProperty;
 import net.md_5.bungee.api.ChatColor;
 
 public class Utils {
@@ -86,7 +87,7 @@ public class Utils {
 
 	public static void displayParticle(Player player, Location l, List<Player> players) {
 
-		if (getParticle(player.getUniqueId()).equals(ParticleEffect.REDSTONE)) {
+		if (getParticle(player.getUniqueId()).hasProperty(ParticleProperty.COLORABLE)) {
 			if (getParticleColor(player) == "random") {
 				getParticle(player.getUniqueId()).display(0, 0, 0, 1, 1, l, players);
 				return;
@@ -423,17 +424,22 @@ public class Utils {
 	public static Inventory getParticleFormatInventory(Player player) {
 		InventoryCreator inv = new InventoryCreator("&3Particle Formats", player, 36);
 		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&7Click an effect.", 'X', null, (short) 0);
-		inv.addItem(new ItemStack(Material.SKULL_ITEM), "&a&lCircle Head", 'A', null, (short) 3);
-		inv.addItem(new ItemStack(Material.LEATHER_BOOTS), "&c&lCircle Feet", 'B', null, (short) 0);
-		inv.addItem(new ItemStack(Material.EMERALD), "&3&lHelix", 'C', null, (short) 0);
-		inv.addItem(new ItemStack(Material.NETHER_STAR), "&4&lDouble Helix", 'D', null, (short) 0);
-		inv.addItem(new ItemStack(Material.IRON_SWORD), "&6&lRandom", 'E', null, (short) 0);
-		inv.addItem(new ItemStack(Material.BLAZE_POWDER), "&b&lCrossFire", 'F', null, (short) 0);
-		inv.addItem(new ItemStack(Material.POTION), "&a&lSpiral", 'G', null, (short) 0);
-		inv.addItem(new ItemStack(Material.REDSTONE), "&c&lBlood Helix", 'H', null, (short) 0);
+		inv.addItem(new ItemStack(Material.DIAMOND_HELMET), "&a&lCircle Head", 'A', null, (short) 0);
+		inv.addItem(new ItemStack(Material.DIAMOND_BOOTS), "&c&lCircle Feet", 'C', null, (short) 0);
+		inv.addItem(new ItemStack(Material.DIAMOND_CHESTPLATE), "&7&lCircle Body", 'B', null, (short) 0);
+		inv.addItem(new ItemStack(Material.EMERALD), "&3&lHelix", 'D', null, (short) 0);
+		inv.addItem(new ItemStack(Material.NETHER_STAR), "&4&lDouble Helix", 'E', null, (short) 0);
+		inv.addItem(new ItemStack(Material.IRON_SWORD), "&6&lRandom", 'F', null, (short) 0);
+		inv.addItem(new ItemStack(Material.BLAZE_POWDER), "&b&lCrossFire", 'G', null, (short) 0);
+		inv.addItem(new ItemStack(Material.POTION), "&a&lSpiral", 'H', null, (short) 0);
+		inv.addItem(new ItemStack(Material.REDSTONE), "&c&lBlood Helix", 'I', null, (short) 0);
+		inv.addItem(new ItemStack(Material.SNOW_BALL), "&e&lShpere", 'J', null, (short) 0);
 
-		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'B', 'C', 'D', 'E',
-				'F', 'G', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
+		inv.setConfiguration(new char[] { 
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+				'X', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'X',
+				'X', 'X', 'X', 'H', 'X', 'J', 'X', 'X', 'X',
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
 
 		});
 		return inv.getInventory();
