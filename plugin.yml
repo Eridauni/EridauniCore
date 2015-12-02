@@ -1,0 +1,16 @@
+name: EridauniCore
+version: 0.0.1
+author: QuickScythe
+description: Core plugin for all of the Eridauni server.
+main: me.quickScythe.eridaunicore.Main
+commands:
+  spawn:
+  help:
+    aliases: ["?","h"]
+  particle:
+    aliases: ["p","particles"]
+  particleformat:
+    aliases: ["pf","particleformats", "format", "f", "formats", "pformat", "pformats"]
+  particlecolor:
+    aliases: ["pc", "particlec", "pcolor"]
+  achievement:
