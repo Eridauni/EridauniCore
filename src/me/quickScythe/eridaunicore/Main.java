@@ -12,10 +12,7 @@ import me.quickScythe.eridaunicore.commands.ReplyCommand;
 import me.quickScythe.eridaunicore.commands.SpawnCommand;
 import me.quickScythe.eridaunicore.commands.TellCommand;
 import me.quickScythe.eridaunicore.commands.WingCommand;
-import me.quickScythe.eridaunicore.listeners.AchievementListener;
-import me.quickScythe.eridaunicore.listeners.ParticleListener;
-import me.quickScythe.eridaunicore.listeners.PingListener;
-import me.quickScythe.eridaunicore.listeners.SignListener;
+import me.quickScythe.eridaunicore.listeners.*;
 import me.quickScythe.eridaunicore.utils.Utils;
 
 public class Main extends JavaPlugin {
@@ -39,6 +36,9 @@ public class Main extends JavaPlugin {
 		new ParticleListener(this);
 		new SignListener(this);
 		new PingListener(this);
+		new EntityListener(this);
+		new ChatListener(this);
+		new BlockListener(this);
 		
 		Utils.start();
 		

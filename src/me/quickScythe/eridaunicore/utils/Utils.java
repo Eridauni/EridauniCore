@@ -16,7 +16,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -31,7 +30,6 @@ import me.quickScythe.eridaunicore.utils.packets.FakeAnvil;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.NoteColor;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.OrdinaryColor;
-import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleColor;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleProperty;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.ContainerAnvil;
@@ -214,6 +212,9 @@ public class Utils {
 
 	public static void start() {
 		startMainTimer();
+		
+		
+		
 
 		try {
 			String encodedSpawn = Main.getPlugin().getConfig().getString("Spawn");
@@ -241,7 +242,8 @@ public class Utils {
 
 	public static void end() {
 		unloadAchievements();
-
+		
+		
 		String sspawn = spawn.getWorld().getName() + ":" + spawn.getX() + ":" + spawn.getY() + ":" + spawn.getZ() + ":"
 				+ spawn.getYaw() + ":" + spawn.getPitch();
 		Main.getPlugin().getConfig().set("Spawn", sspawn);
@@ -671,5 +673,6 @@ public class Utils {
 	public static Player getRecent(Player sender) {
 		return Bukkit.getPlayer(recents.get(sender.getUniqueId()));
 	}
-
+	
+	
 }

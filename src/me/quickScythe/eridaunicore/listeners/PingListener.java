@@ -7,6 +7,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 
 import me.quickScythe.eridaunicore.Main;
 import me.quickScythe.eridaunicore.utils.Images;
+import me.quickScythe.eridaunicore.utils.Utils;
 import res.Texture;
 
 public class PingListener implements Listener {
@@ -20,6 +21,8 @@ public class PingListener implements Listener {
 	
 	@EventHandler
 	public void onServerPingEvent(ServerListPingEvent e){
+		
+		e.setMotd(Utils.colorize("&e&lEridauni\n&fSurvial in a friendly community."));
 		
 		try {
 			e.setServerIcon(Bukkit.loadServerIcon(Images.toBufferedImage(Texture.loadTexture("/res/logo.png"))));
