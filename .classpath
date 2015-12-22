@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Cameron Witcher/workspaces/Java/EridauniCore/server/spigot_server.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Cameron Witcher/workspaces/Java/EridauniCore/server/PermissionsEx-1.23.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cameron Witcher/Desktop/Spigot Testing/spigot_server.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cameron Witcher/Desktop/Spigot Testing/plugins/PermissionsEx-1.23.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
