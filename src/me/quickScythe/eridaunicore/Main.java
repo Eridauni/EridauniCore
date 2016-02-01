@@ -25,6 +25,7 @@ public class Main extends JavaPlugin {
 		new ParticleFormatCommand(this, "particleformat");
 		new SpawnCommand(this, "spawn");
 		new ParticleColorCommand(this, "particlecolor");
+		new WingCommand(this, "wings");
 		new AchievementListener(this);
 		new ParticleListener(this);
 		

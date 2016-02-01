@@ -14,3 +14,4 @@ commands:
   particlecolor:
     aliases: ["pc", "particlec", "pcolor"]
   achievement:
+  wings:
