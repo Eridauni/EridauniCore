@@ -5,7 +5,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.particleformats.*;
+import me.quickScythe.eridaunicore.particleformats.BloodHelix;
+import me.quickScythe.eridaunicore.particleformats.CircleBody;
+import me.quickScythe.eridaunicore.particleformats.CircleFeet;
+import me.quickScythe.eridaunicore.particleformats.CircleHead;
+import me.quickScythe.eridaunicore.particleformats.CrossFire;
+import me.quickScythe.eridaunicore.particleformats.DoubleHelix;
+import me.quickScythe.eridaunicore.particleformats.Helix;
+import me.quickScythe.eridaunicore.particleformats.Random;
+import me.quickScythe.eridaunicore.particleformats.Sphere;
+import me.quickScythe.eridaunicore.particleformats.Spiral;
 
 public enum ParticleFormat {
 	CIRCLE_FEET("CircleFeet"),

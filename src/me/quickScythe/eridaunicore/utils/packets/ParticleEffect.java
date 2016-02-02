@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleData;
 import me.quickScythe.eridaunicore.utils.packets.ReflectionUtils.PackageType;
 
 

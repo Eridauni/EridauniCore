@@ -8,6 +8,8 @@ public final class FakeAnvil extends ContainerAnvil {
  
 public FakeAnvil(EntityHuman entityHuman) {    
     super(entityHuman.inventory, entityHuman.world, new BlockPosition(0,0,0), entityHuman);
+    this.a("Test");
+    
     
 }
  

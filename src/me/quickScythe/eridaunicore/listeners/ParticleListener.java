@@ -1,5 +1,7 @@
 package me.quickScythe.eridaunicore.listeners;
 
+import java.awt.Color;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -232,44 +234,45 @@ public class ParticleListener implements Listener {
 		if (ChatColor.stripColor(e.getInventory().getTitle()).contains("Color Picker")){
 			if(e.getCurrentItem().getType().equals(Material.INK_SACK)){
 				Short m = e.getCurrentItem().getDurability();
+				Player player = (Player) e.getWhoClicked();
 						switch(m){
 						case 1:
-							Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particlecolor 225 51 0");
+							Utils.setParticleColor(player, Color.RED);
 							e.getWhoClicked().closeInventory();
 							e.setCancelled(true);
 							break;
 						case 14:
-							Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particlecolor 225 153 0");
+							Utils.setParticleColor(player, Color.ORANGE);
 							e.getWhoClicked().closeInventory();
 							e.setCancelled(true);
 							break;
 						case 11:
-							Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particlecolor 225 255 0");
+							Utils.setParticleColor(player, Color.YELLOW);
 							e.getWhoClicked().closeInventory();
 							e.setCancelled(true);
 							break;	
 						case 10:
-							Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particlecolor 153 255 51");
+							Utils.setParticleColor(player, Color.GREEN);
 							e.getWhoClicked().closeInventory();
 							e.setCancelled(true);
 							break;	
 						case 2:
-							Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particlecolor 1 153 0");
+							Utils.setParticleColor(player, Color.GREEN);
 							e.getWhoClicked().closeInventory();
 							e.setCancelled(true);
 							break;	
 						case 12:
-							Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particlecolor 102 255 255");
+							Utils.setParticleColor(player, Color.BLUE);
 							e.getWhoClicked().closeInventory();
 							e.setCancelled(true);
 							break;	
 						case 5:
-							Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particlecolor 153 0 153");
+							Utils.setParticleColor(player, Color.MAGENTA);
 							e.getWhoClicked().closeInventory();
 							e.setCancelled(true);
 							break;	
 						case 0:
-							Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particlecolor 1 1 1");
+							Utils.setParticleColor(player, Color.BLACK);
 							e.getWhoClicked().closeInventory();
 							e.setCancelled(true);
 							break;

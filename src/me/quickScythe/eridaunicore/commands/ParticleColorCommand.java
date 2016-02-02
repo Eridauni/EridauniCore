@@ -16,10 +16,10 @@ public class ParticleColorCommand implements CommandExecutor {
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(cmd.getName().equalsIgnoreCase("particlecolor") && sender.hasPermission("vip.particle") && sender instanceof Player && args.length == 3){
-			Utils.setParticleColor((Player) sender, args[0] + " " + args[1] + " " + args[2]);
+			Utils.setParticleRGBColor((Player) sender, args[0] + " " + args[1] + " " + args[2]);
 			return false;
 		} if(args.length == 1 && args[0].equalsIgnoreCase("random"))
-			Utils.setParticleColor((Player) sender, "random");
+			Utils.setParticleColor((Player) sender, null);
 		if(args.length == 0)
 			((Player) sender).openInventory(Utils.getParticleColorInventory((Player) sender));
 		

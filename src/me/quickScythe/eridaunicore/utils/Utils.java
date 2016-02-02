@@ -1,11 +1,13 @@
 package me.quickScythe.eridaunicore.utils;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -22,17 +25,24 @@ import me.quickScythe.eridaunicore.Main;
 import me.quickScythe.eridaunicore.core.Achievement;
 import me.quickScythe.eridaunicore.core.Gamer;
 import me.quickScythe.eridaunicore.core.MainTimer;
+import me.quickScythe.eridaunicore.utils.packets.FakeAnvil;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect;
+import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.NoteColor;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.OrdinaryColor;
+import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleColor;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleProperty;
 import net.md_5.bungee.api.ChatColor;
+import net.minecraft.server.v1_8_R3.ContainerAnvil;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
 
 public class Utils {
 
 	private static Map<UUID, Integer> particleTimer = new HashMap<>();
 	private static Map<UUID, Double[]> helixMathMap = new HashMap<>();
 	private static Map<UUID, ParticleEffect> particles = new HashMap<>();
-	private static Map<UUID, String> colors = new HashMap<>();
+	private static Map<UUID, Color> RGBcolors = new HashMap<>();
+	private static Map<UUID, Color> colors = new HashMap<>();
 	private static Map<UUID, Gamer> gamers = new HashMap<>();
 	private static Location spawn;
 	private static Map<UUID, ParticleFormat> particleformats = new HashMap<>();
@@ -40,6 +50,7 @@ public class Utils {
 	private static Map<String, Achievement> achievements = new HashMap<>();
 	private static Map<UUID, ArrayList<Achievement>> playerAchievements = new HashMap<>();
 	private static BukkitTask task;
+	public static int note = 0;
 	private static char[] alphebet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
 			'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
 			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
@@ -87,61 +98,112 @@ public class Utils {
 
 	public static void displayParticle(Player player, Location l, List<Player> players) {
 
+		
+
 		if (getParticle(player.getUniqueId()).hasProperty(ParticleProperty.COLORABLE)) {
-			if (getParticleColor(player) == "random") {
-				getParticle(player.getUniqueId()).display(0, 0, 0, 1, 1, l, players);
+			if (getParticle(player.getUniqueId()).equals(ParticleEffect.NOTE)) {
+				Color color = Color.BLUE;
+				if(colors.containsKey(player.getUniqueId()))
+					color = colors.get(player.getUniqueId());
+				getParticle(player.getUniqueId()).display(new NoteColor(getNoteColor(color)), l, players);
 				return;
 			}
-			if (getParticleColor(player) == null) {
-				getParticle(player.getUniqueId()).display(0, 0, 0, 0, 1, l, players);
+				Color color = null;
+				if(colors.containsKey(player.getUniqueId()))
+					color = colors.get(player.getUniqueId());
+				if(RGBcolors.containsKey(player.getUniqueId()))
+					color = RGBcolors.get(player.getUniqueId());
+				
+				int red = color.getRed();
+				int green = color.getGreen();
+				int blue = color.getBlue();
+				
+				if(red == 0) red = 1;
+				if(green == 0) green = 1;
+				if(blue == 0) blue = 1;
+				
+				if(color == null) getParticle(player.getUniqueId()).display(0, 0, 0, 1, 1, l, players);
+				else getParticle(player.getUniqueId()).display(new OrdinaryColor(red, green, blue), l, players);
 				return;
-			}
-			String[] values = getParticleColor(player).split(" ");
-			getParticle(player.getUniqueId()).display(new OrdinaryColor((int) Integer.parseInt(values[0]),
-					(int) Integer.parseInt(values[1]), (int) Integer.parseInt(values[2])), l, players);
-			return;
+
+			
+			
 		}
 		getParticle(player.getUniqueId()).display(0, 0, 0, 0, 1, l, players);
+	}
+
+	private static int getNoteColor(Color color) {
+		String ccolor = color.toString();
+		switch(ccolor){
+		case "red":
+			return 6;
+		case "orange":
+			return 8;
+		case "yellow":
+			return 7;
+		case "green": 
+			return 22;
+		case "blue":
+			return 0;
+		case "magenta":
+			return 5;
+			default:
+				return 0;
+			
+			
+			
+		}
 	}
 
 	public static ParticleEffect getParticle(UUID uuid) {
 		return particles.get(uuid);
 	}
 
-	private static String getParticleColor(Player player) {
+	private static Color getParticleColor(Player player) {
+		
 		return colors.get(player.getUniqueId());
 	}
+	
+	private static Color getParticleRGBColor(Player player) {
+		
+		return RGBcolors.get(player.getUniqueId());
+	}
 
-	public static void setParticleColor(Player player, String colorRGB) {
-		if (colorRGB.contains(" ")) {
-			String[] values = colorRGB.split(" ");
-			if (Integer.parseInt(values[0]) > 255) {
-				player.sendMessage(Utils.colorize("&3Particles &7> &fYour RED value is above 255."));
-				return;
-			}
-			if (Integer.parseInt(values[1]) > 255) {
-				player.sendMessage(Utils.colorize("&3Particles &7> &fYour GREEN value is above 255."));
-				return;
-			}
-			if (Integer.parseInt(values[2]) > 255) {
-				player.sendMessage(Utils.colorize("&3Particles &7> &fYour BLUE value is above 255."));
-				return;
-			}
-			if (Integer.parseInt(values[0]) < 0) {
-				player.sendMessage(Utils.colorize("&3Particles &7> &fYour RED value is below 0."));
-				return;
-			}
-			if (Integer.parseInt(values[1]) < 0) {
-				player.sendMessage(Utils.colorize("&3Particles &7> &fYour GREEN value is below 0."));
-				return;
-			}
-			if (Integer.parseInt(values[2]) < 0) {
-				player.sendMessage(Utils.colorize("&3Particles &7> &fYour BLUE value is below 0."));
-				return;
-			}
-
+	public static void setParticleColor(Player player, Color color) {
+		RGBcolors.remove(player.getUniqueId());
+		colors.put(player.getUniqueId(), color);
+	}
+	
+	public static void setParticleRGBColor(Player player, String colorRGB) {
+		colors.remove(player.getUniqueId());
+		String[] values = colorRGB.split(" ");
+		if (Integer.parseInt(values[0]) > 255) {
+			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour RED value is above 255."));
+			return;
 		}
-		colors.put(player.getUniqueId(), colorRGB);
+		if (Integer.parseInt(values[1]) > 255) {
+			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour GREEN value is above 255."));
+			return;
+		}
+		if (Integer.parseInt(values[2]) > 255) {
+			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour BLUE value is above 255."));
+			return;
+		}
+		if (Integer.parseInt(values[0]) < 0) {
+			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour RED value is below 0."));
+			return;
+		}
+		if (Integer.parseInt(values[1]) < 0) {
+			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour GREEN value is below 0."));
+			return;
+		}
+		if (Integer.parseInt(values[2]) < 0) {
+			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour BLUE value is below 0."));
+			return;
+		}
+
+		RGBcolors.put(player.getUniqueId(), new java.awt.Color(Float.parseFloat(values[0]), Float.parseFloat(values[1]),
+				Float.parseFloat(values[2])));
 
 	}
 
@@ -286,6 +348,10 @@ public class Utils {
 			player.playSound(player.getLocation(), Sound.ENDERDRAGON_WINGS, 10, 10);
 			player.setAllowFlight(true);
 			player.setFlying(true);
+
+			player.teleport(new Location(player.getWorld(), player.getLocation().getX(),
+					player.getLocation().getY() + 0.1, player.getLocation().getZ(), player.getLocation().getYaw(),
+					player.getLocation().getPitch()));
 			player.sendMessage(Utils.colorize("&e&lGadgets &f>&7 You have been granted the ability to &f&lfly&7!"));
 		}
 	}
@@ -299,8 +365,35 @@ public class Utils {
 		loc.setPitch(0.0F);
 		loc.add(0.0D, 1.8D, 0.0D);
 		loc.add(loc.getDirection().multiply(-0.2D));
-		OrdinaryColor color = new OrdinaryColor(255, 255, 255);
 
+
+		Color ccolor = null;
+		if(colors.containsKey(player.getUniqueId()))
+			ccolor = colors.get(player.getUniqueId());
+		if(RGBcolors.containsKey(player.getUniqueId()))
+			ccolor = RGBcolors.get(player.getUniqueId());
+		
+		int red = 0;
+		int green = 0;
+		int blue = 0;
+		
+		if(ccolor == null){
+			red = new Random().nextInt(255);
+			green = new Random().nextInt(255);
+			blue = new Random().nextInt(255);
+		} else {
+			red = ccolor.getRed();
+			green = ccolor.getGreen();
+			blue = ccolor.getBlue();
+		}
+		
+		
+		
+		if(red == 0) red = 1;
+		if(green == 0) green = 1;
+		if(blue == 0) blue = 1;
+		
+		ParticleEffect.ParticleColor color = new OrdinaryColor(red, green, blue);
 		Location loc1R = loc.clone();
 		loc1R.setYaw(loc1R.getYaw() + 110.0F);
 		Location loc2R = loc1R.clone().add(loc1R.getDirection().multiply(1));
@@ -435,11 +528,8 @@ public class Utils {
 		inv.addItem(new ItemStack(Material.REDSTONE), "&c&lBlood Helix", 'I', null, (short) 0);
 		inv.addItem(new ItemStack(Material.SNOW_BALL), "&e&lShpere", 'J', null, (short) 0);
 
-		inv.setConfiguration(new char[] { 
-				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
-				'X', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'X',
-				'X', 'X', 'X', 'H', 'X', 'J', 'X', 'X', 'X',
-				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
+		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'B', 'C', 'D', 'E',
+				'F', 'G', 'X', 'X', 'X', 'X', 'H', 'X', 'J', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
 
 		});
 		return inv.getInventory();
@@ -528,8 +618,40 @@ public class Utils {
 
 		return ach;
 	}
-	public static char getAlphebet(int i){
-		return alphebet[i-1];
+
+	public static char getAlphebet(int i) {
+		return alphebet[i - 1];
+	}
+
+	public static void openAnvil(Player player, Inventory inventory) {
+
+		// Get our EntityPlayer
+		EntityPlayer p = ((CraftPlayer) player).getHandle();
+
+		// Create the AnvilContainer
+		ContainerAnvil container = new FakeAnvil(p);
+
+		// Set the items to the items from the inventory given
+		container.getBukkitView().getTopInventory().setItem(0, inventory.getItem(0));
+		container.getBukkitView().getTopInventory().setItem(1, inventory.getItem(1));
+		// container.getBukkitView().getTopInventory().setItem(2,
+		// inventory.getItem(2));
+
+		// Counter stuff that the game uses to keep track of inventories
+		int c = p.nextContainerCounter();
+
+		// Send the packet
+		p.playerConnection.sendPacket(new PacketPlayOutOpenWindow());
+
+		// Set their active container to the container
+		p.activeContainer = container;
+
+		// Set their active container window id to that counter stuff
+		p.activeContainer.windowId = c;
+
+		// Add the slot listener
+		p.activeContainer.addSlotListener(p);
+
 	}
 
 }

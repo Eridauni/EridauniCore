@@ -19,6 +19,7 @@ public class MainTimer extends BukkitRunnable {
 				Utils.displayWings(player);
 			}
 			if(player.hasPermission("vip.particles") && Utils.getParticle(player.getUniqueId()) != null && Utils.getParticleFormat(player) != null){
+//				Bukkit.broadcastMessage(player.getVelocity().length() +"");
 				Utils.getParticleFormat(player).run(player);
 			}
 		}

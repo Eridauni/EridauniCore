@@ -4,12 +4,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.quickScythe.eridaunicore.commands.AchievementCommand;
 import me.quickScythe.eridaunicore.commands.HelpCommand;
+import me.quickScythe.eridaunicore.commands.MenuCommand;
 import me.quickScythe.eridaunicore.commands.ParticleColorCommand;
 import me.quickScythe.eridaunicore.commands.ParticleCommand;
 import me.quickScythe.eridaunicore.commands.ParticleFormatCommand;
 import me.quickScythe.eridaunicore.commands.SpawnCommand;
+import me.quickScythe.eridaunicore.commands.WingCommand;
 import me.quickScythe.eridaunicore.listeners.AchievementListener;
 import me.quickScythe.eridaunicore.listeners.ParticleListener;
+import me.quickScythe.eridaunicore.listeners.SignListener;
 import me.quickScythe.eridaunicore.utils.Utils;
 
 public class Main extends JavaPlugin {
@@ -26,8 +29,10 @@ public class Main extends JavaPlugin {
 		new SpawnCommand(this, "spawn");
 		new ParticleColorCommand(this, "particlecolor");
 		new WingCommand(this, "wings");
+		new MenuCommand(this, "menu");
 		new AchievementListener(this);
 		new ParticleListener(this);
+		new SignListener(this);
 		
 		Utils.start();
 		
