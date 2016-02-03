@@ -12,6 +12,7 @@ import me.quickScythe.eridaunicore.commands.SpawnCommand;
 import me.quickScythe.eridaunicore.commands.WingCommand;
 import me.quickScythe.eridaunicore.listeners.AchievementListener;
 import me.quickScythe.eridaunicore.listeners.ParticleListener;
+import me.quickScythe.eridaunicore.listeners.PingListener;
 import me.quickScythe.eridaunicore.listeners.SignListener;
 import me.quickScythe.eridaunicore.utils.Utils;
 
@@ -33,8 +34,11 @@ public class Main extends JavaPlugin {
 		new AchievementListener(this);
 		new ParticleListener(this);
 		new SignListener(this);
+		new PingListener(this);
 		
 		Utils.start();
+		
+		
 		
 		
 	}
