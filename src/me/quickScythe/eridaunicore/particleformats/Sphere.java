@@ -61,7 +61,7 @@ public class Sphere implements Runnable {
 		Utils.displayParticle(player, new Location(l2.getWorld(), l2.getX(),(l2.getY())+y, l2.getZ()), players);
 		
 		Utils.setHelixMath(player, y, up);
-		if(i==31) Utils.setParticleTimer(player, 0);
+		if(i==63) Utils.setParticleTimer(player, 0);
 		else Utils.setParticleTimer(player, i+1);
 		players = null;
 	}

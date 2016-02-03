@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -90,10 +91,17 @@ public class Utils {
 		return new Location(location.getWorld(), x, y + 1, location.getZ());
 	}
 
-	public static Location getCircleLocationBackwards(int i, Double width, Location location) {
+	public static Location getCircleLocation2(int i, Double width, Location location) {
 
 		double x = (double) (width * Math.cos(((i + 16 - 31) * 11.25) * Math.PI / 180F)) + location.getX();
 		double z = (double) (width * Math.sin(((i + 16 - 31) * 11.25) * Math.PI / 180F)) + location.getZ();
+		return new Location(location.getWorld(), x, location.getY(), z);
+
+	}
+	public static Location getCircleLocationBackwards(int i, Double width, Location location) {
+
+		double x = (double) (width * Math.cos((-1*(i + 16 - 31) * 11.25) * Math.PI / 180F)) + location.getX();
+		double z = (double) (width * Math.sin((-1*(i + 16 - 31) * 11.25) * Math.PI / 180F)) + location.getZ();
 		return new Location(location.getWorld(), x, location.getY(), z);
 
 	}
@@ -111,10 +119,13 @@ public class Utils {
 				return;
 			}
 				Color color = null;
-				if(colors.containsKey(player.getUniqueId()))
-					color = colors.get(player.getUniqueId());
-				if(RGBcolors.containsKey(player.getUniqueId()))
+				if(RGBcolors.containsKey(player.getUniqueId())){
 					color = RGBcolors.get(player.getUniqueId());
+				}
+				if(colors.containsKey(player.getUniqueId())){
+					color = colors.get(player.getUniqueId());
+				}
+				
 				
 				int red = color.getRed();
 				int green = color.getGreen();
@@ -161,15 +172,8 @@ public class Utils {
 		return particles.get(uuid);
 	}
 
-	private static Color getParticleColor(Player player) {
-		
-		return colors.get(player.getUniqueId());
-	}
 	
-	private static Color getParticleRGBColor(Player player) {
-		
-		return RGBcolors.get(player.getUniqueId());
-	}
+	
 
 	public static void setParticleColor(Player player, Color color) {
 		RGBcolors.remove(player.getUniqueId());
@@ -204,8 +208,7 @@ public class Utils {
 			return;
 		}
 
-		RGBcolors.put(player.getUniqueId(), new java.awt.Color(Float.parseFloat(values[0]), Float.parseFloat(values[1]),
-				Float.parseFloat(values[2])));
+		RGBcolors.put(player.getUniqueId(), new Color(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2])));
 
 	}
 
@@ -340,7 +343,7 @@ public class Utils {
 		}
 		if (wings.contains(player.getUniqueId())) {
 			wings.remove(player.getUniqueId());
-			if (!player.hasPermission("core.fly")) {
+			if (player.getGameMode().equals(GameMode.SURVIVAL)) {
 				player.setAllowFlight(false);
 			}
 			player.setFlying(false);
@@ -530,8 +533,11 @@ public class Utils {
 		inv.addItem(new ItemStack(Material.REDSTONE), "&c&lBlood Helix", 'I', null, (short) 0);
 		inv.addItem(new ItemStack(Material.SNOW_BALL), "&e&lShpere", 'J', null, (short) 0);
 
-		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'B', 'C', 'D', 'E',
-				'F', 'G', 'X', 'X', 'X', 'X', 'H', 'X', 'J', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
+		inv.setConfiguration(new char[] { 
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+				'X', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'X',
+				'X', 'X', 'X', 'H', 'I', 'J', 'X', 'X', 'X',
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
 
 		});
 		return inv.getInventory();
@@ -540,6 +546,7 @@ public class Utils {
 	public static void setParticleFormat(Player player, ParticleFormat format) {
 		particleformats.put(player.getUniqueId(), format);
 		particleTimer.put(player.getUniqueId(), 0);
+		setHelixMath(player, 0, 0);
 		restartMainTimer();
 	}
 

@@ -30,7 +30,7 @@ public class DoubleHelix implements Runnable {
 		for(Entity e : player.getNearbyEntities(50, 50, 50)) if(e instanceof Player) players.add((Player) e);
 		players.add(player);
 		l = Utils.getCircleLocation(i, 1.0, player.getLocation());
-		l2 = Utils.getCircleLocationBackwards(i, 1.0, player.getLocation());
+		l2 = Utils.getCircleLocation2(i, 1.0, player.getLocation());
 		Double[] info = Utils.helixMath(player);
 		if(info == null){
 			Utils.setHelixMath(player, 0, 0);
