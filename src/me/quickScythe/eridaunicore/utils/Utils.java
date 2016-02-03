@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -44,6 +45,7 @@ public class Utils {
 	private static Map<UUID, Color> RGBcolors = new HashMap<>();
 	private static Map<UUID, Color> colors = new HashMap<>();
 	private static Map<UUID, Gamer> gamers = new HashMap<>();
+	private static Map<UUID, UUID> recents = new HashMap<>();
 	private static Location spawn;
 	private static Map<UUID, ParticleFormat> particleformats = new HashMap<>();
 	private static Set<UUID> wings = new HashSet<>();
@@ -225,7 +227,7 @@ public class Utils {
 		}
 		createGamers();
 
-		Main.getPlugin().getServer().getConsoleSender().sendMessage(("&e&lServer &f>&7 Hub enabled!"));
+		Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lServer &f>&7 Hub enabled!")));
 
 	}
 
@@ -652,6 +654,15 @@ public class Utils {
 		// Add the slot listener
 		p.activeContainer.addSlotListener(p);
 
+	}
+
+	public static void updateRecents(Player player, Player sender) {
+		recents.put(player.getUniqueId(), sender.getUniqueId());
+		recents.put(sender.getUniqueId(), player.getUniqueId());
+	}
+
+	public static Player getRecent(Player sender) {
+		return Bukkit.getPlayer(recents.get(sender.getUniqueId()));
 	}
 
 }

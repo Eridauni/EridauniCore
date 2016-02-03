@@ -16,3 +16,7 @@ commands:
   achievement:
   wings:
   menu:
+  reply:
+    aliases: ["r"]
+  tell:
+    aliases: ["t","msg","message","whisper","w"]

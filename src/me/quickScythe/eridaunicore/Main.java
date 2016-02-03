@@ -8,7 +8,9 @@ import me.quickScythe.eridaunicore.commands.MenuCommand;
 import me.quickScythe.eridaunicore.commands.ParticleColorCommand;
 import me.quickScythe.eridaunicore.commands.ParticleCommand;
 import me.quickScythe.eridaunicore.commands.ParticleFormatCommand;
+import me.quickScythe.eridaunicore.commands.ReplyCommand;
 import me.quickScythe.eridaunicore.commands.SpawnCommand;
+import me.quickScythe.eridaunicore.commands.TellCommand;
 import me.quickScythe.eridaunicore.commands.WingCommand;
 import me.quickScythe.eridaunicore.listeners.AchievementListener;
 import me.quickScythe.eridaunicore.listeners.ParticleListener;
@@ -31,6 +33,8 @@ public class Main extends JavaPlugin {
 		new ParticleColorCommand(this, "particlecolor");
 		new WingCommand(this, "wings");
 		new MenuCommand(this, "menu");
+		new TellCommand(this, "tell");
+		new ReplyCommand(this, "reply");
 		new AchievementListener(this);
 		new ParticleListener(this);
 		new SignListener(this);
