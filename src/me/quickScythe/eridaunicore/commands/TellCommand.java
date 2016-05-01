@@ -17,7 +17,7 @@ public class TellCommand implements CommandExecutor {
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-		if(cmd.getName().equalsIgnoreCase("tell") && sender instanceof Player){
+		if(cmd.getName().equalsIgnoreCase("tell")){
 			if(args.length <= 1){
 				sender.sendMessage(Utils.colorize("&e&lWhisper &f>&7 To whipser to a player, type &f\"/whisper <player> <message>\"&7."));
 				return false;
@@ -26,7 +26,8 @@ public class TellCommand implements CommandExecutor {
 				sender.sendMessage(Utils.colorize("&e&lWhisper &f>&7 That player isn't online."));
 				return false;
 			}
-			if(Bukkit.getPlayer(args[0]).equals((Player) sender)){
+			if(sender instanceof Player && Bukkit.getPlayer(args[0]).equals((Player) sender)){
+				((Player) sender).sendMessage(Utils.colorize("&e&lWhisper &f>&7 You can't whisper to yourself!"));
 				return false;
 			}
 			

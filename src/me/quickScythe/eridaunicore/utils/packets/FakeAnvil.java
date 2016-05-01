@@ -1,8 +1,8 @@
 package me.quickScythe.eridaunicore.utils.packets;
 
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.ContainerAnvil;
-import net.minecraft.server.v1_8_R3.EntityHuman;
+import net.minecraft.server.v1_9_R1.BlockPosition;
+import net.minecraft.server.v1_9_R1.ContainerAnvil;
+import net.minecraft.server.v1_9_R1.EntityHuman;
 
 public final class FakeAnvil extends ContainerAnvil {
  

@@ -20,3 +20,7 @@ commands:
     aliases: ["r"]
   tell:
     aliases: ["t","msg","message","whisper","w"]
+
+  friends:
+    aliases: ["f"]
+    

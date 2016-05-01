@@ -4,15 +4,24 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import me.quickScythe.eridaunicore.utils.Utils;
 
 public class Gamer {
 	UUID uid;
+	boolean walking;
+	ItemStack skull = new ItemStack(Material.SKULL_ITEM, (short) 1, (short) 3);
 	ArrayList<Achievement> achievements = new ArrayList<>();
 	
 	public Gamer(UUID uid){
 		this.uid = uid;
+		
+		SkullMeta meta = (SkullMeta) skull.getItemMeta();
+		meta.setOwner(Bukkit.getPlayer(uid).getName());
+		skull.setItemMeta(meta);
 	}
 	
 	public Object getUUID() {
@@ -26,6 +35,9 @@ public class Gamer {
 		
 		
 	}
+	public void setWalking(boolean w){
+		walking = w;
+	}
 	public boolean hasAchievement(Achievement achievement){
 		try{
 			return achievements.contains(achievement);
@@ -38,6 +50,14 @@ public class Gamer {
 	}
 	public void sendMessage(String message){
 		Bukkit.getPlayer(uid).sendMessage(Utils.colorize(message));
+	}
+
+	public boolean isWalking() {
+		return walking;
+	}
+
+	public ItemStack getSkull() {
+		return skull;
 	}
 	
 

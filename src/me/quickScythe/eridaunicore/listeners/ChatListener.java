@@ -1,10 +1,14 @@
 package me.quickScythe.eridaunicore.listeners;
 
+import java.sql.ResultSet;
+
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.quickScythe.eridaunicore.Main;
+import me.quickScythe.eridaunicore.utils.IDatabase;
 import me.quickScythe.eridaunicore.utils.Utils;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -23,6 +27,58 @@ public class ChatListener implements Listener {
 			message = Utils.colorize(message);
 		}
 		e.setFormat(Utils.colorize(player.getPrefix() + player.getName() + " &f> &8" + player.getSuffix()) + message);
+		
+			String query = e.getMessage();
+			
+			if(query.equalsIgnoreCase("friends")){
+				
+				for(String f : Utils.getFriends(e.getPlayer()).split(","))
+					Bukkit.broadcastMessage(f);
+				
+				
+				
+			}
+			
+			if(query.startsWith("query:")){
+				query = query.replaceFirst("query:", "");
+				IDatabase sql = Utils.getConnection();
+				if(sql.init()){
+//					Bukkit.broadcastMessage("SQL is workin");
+					try{
+						ResultSet set = sql.query(query);
+						while(set.next()){
+							for(int i=1;i!=set.getMetaData().getColumnCount()+1;i++)
+							Bukkit.broadcastMessage("ROW " + set.getRow() + " COLUMN " + i + "= " + set.getObject(i));
+						}
+					}catch(Exception ex){
+						ex.printStackTrace();
+					}
+				}
+			}
+			if(query.startsWith("update:")){
+				query = query.replaceFirst("update:", "");
+				IDatabase sql = Utils.getConnection();
+				if(sql.init()){
+					int result = sql.update(query);
+					Bukkit.broadcastMessage(result + "");
+				}
+			}
+			if(query.startsWith("insert:")){
+				query = query.replaceFirst("insert:", "");
+				IDatabase sql = Utils.getConnection();
+				if(sql.init()){
+					
+				}
+			}
+			
+			
+			
+			
+			
+		
+		
+		
+		
 	}
 	
 	

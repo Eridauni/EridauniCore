@@ -51,7 +51,7 @@ public class Images {
       }
 
       // Create a buffered image with transparency
-      BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+      BufferedImage bimage = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
 
       // Draw the image on to the buffered image
       Graphics2D bGr = bimage.createGraphics();

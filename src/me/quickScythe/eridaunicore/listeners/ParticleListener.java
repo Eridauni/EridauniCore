@@ -227,6 +227,16 @@ public class ParticleListener implements Listener {
 				e.setCancelled(true);
 				e.getWhoClicked().closeInventory();
 				break;
+			case SHIELD:
+				Utils.setParticleFormat((Player) e.getWhoClicked(), ParticleFormat.FORCEFIELD);
+				e.setCancelled(true);
+				e.getWhoClicked().closeInventory();
+				break;
+			case SKULL_ITEM:
+				Utils.setParticleFormat((Player) e.getWhoClicked(), ParticleFormat.CIRCLE_PLAYER);
+				e.setCancelled(true);
+				e.getWhoClicked().closeInventory();
+				break;
 				default:
 					break;
 			}

@@ -9,8 +9,10 @@ import me.quickScythe.eridaunicore.particleformats.BloodHelix;
 import me.quickScythe.eridaunicore.particleformats.CircleBody;
 import me.quickScythe.eridaunicore.particleformats.CircleFeet;
 import me.quickScythe.eridaunicore.particleformats.CircleHead;
+import me.quickScythe.eridaunicore.particleformats.CirclePlayer;
 import me.quickScythe.eridaunicore.particleformats.CrossFire;
 import me.quickScythe.eridaunicore.particleformats.DoubleHelix;
+import me.quickScythe.eridaunicore.particleformats.Forcefield;
 import me.quickScythe.eridaunicore.particleformats.Helix;
 import me.quickScythe.eridaunicore.particleformats.Random;
 import me.quickScythe.eridaunicore.particleformats.Sphere;
@@ -26,7 +28,9 @@ public enum ParticleFormat {
 	CROSS_FIRE("CrossFire"),
 	SPIRAL("Spiral"),
 	SPHERE("Sphere"),
-	BLOOD_HELIX("BloodHelix");
+	BLOOD_HELIX("BloodHelix"), 
+	FORCEFIELD("Forcefield"), 
+	CIRCLE_PLAYER("CirclePlayer");
 	
 	String format;
 	ParticleFormat(String format){
@@ -44,6 +48,8 @@ public enum ParticleFormat {
 		if(format == "Spiral") Bukkit.getScheduler().runTask(Main.getPlugin(), new Spiral(player));
 		if(format == "BloodHelix") Bukkit.getScheduler().runTask(Main.getPlugin(), new BloodHelix(player));
 		if(format == "Sphere") Bukkit.getScheduler().runTask(Main.getPlugin(), new Sphere(player));
+		if(format == "Forcefield") Bukkit.getScheduler().runTask(Main.getPlugin(), new Forcefield(player));
+		if(format == "CirclePlayer") Bukkit.getScheduler().runTask(Main.getPlugin(), new CirclePlayer(player));
 	}
 
 }

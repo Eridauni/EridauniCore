@@ -1,5 +1,5 @@
 package me.quickScythe.eridaunicore.utils;
-/*
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,10 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-*/public class SQLUtils {/*
+public class SQLUtils {
 
 	static Connection con;
 	static String user;
@@ -20,10 +19,10 @@ import org.bukkit.entity.Player;
 	static String database;
 
 	public static Connection getConnection() {
-		user = "iroicadmin";
+		user = "u720689672_admin";
 		pass = "p9139804385";
-		host = "db4free.net";
-		database = "iroic";
+		host = "mysql.hostinger.co.uk";
+		database = "	u720689672_stats";
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -50,12 +49,12 @@ import org.bukkit.entity.Player;
 			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			runINSERTCommand("INSERT INTO Money (Player, Balance) VALUES (?,?)", new String[] {"" + Bukkit.getPlayer("QuickScythe").getUniqueId(), "100"});
+//			runCommand("INSERT INTO Money (Player, Balance) VALUES (?,?)", new String[] {"" + Bukkit.getPlayer("QuickScythe").getUniqueId(), "100"});
 		}
 		return null;
 	}
 
-	public static void runINSERTCommand(String cmd, String[] values) {
+	public static void runCommand(String cmd, String[] values) {
 		try {
 			PreparedStatement stmt = con.prepareStatement(cmd);
 			for (int i = 0; i != values.length - 1;) {
@@ -98,4 +97,4 @@ import org.bukkit.entity.Player;
 		}
 	}
 
-*/}
+}

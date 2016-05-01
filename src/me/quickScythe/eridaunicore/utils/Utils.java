@@ -1,6 +1,9 @@
 package me.quickScythe.eridaunicore.utils;
 
 import java.awt.Color;
+import java.io.File;
+import java.net.InetAddress;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,10 +19,13 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitTask;
 
 import me.quickScythe.eridaunicore.Main;
@@ -32,9 +38,11 @@ import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.NoteColor;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.OrdinaryColor;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleProperty;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R3.ContainerAnvil;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_9_R1.ContainerAnvil;
+import net.minecraft.server.v1_9_R1.EntityPlayer;
+import net.minecraft.server.v1_9_R1.PacketPlayOutOpenWindow;
+import ru.tehkode.permissions.PermissionUser;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class Utils {
 
@@ -45,16 +53,76 @@ public class Utils {
 	private static Map<UUID, Color> colors = new HashMap<>();
 	private static Map<UUID, Gamer> gamers = new HashMap<>();
 	private static Map<UUID, UUID> recents = new HashMap<>();
+	private static FileConfiguration playerFile = YamlConfiguration.loadConfiguration(new File(Main.getPlugin().getDataFolder(), "players.yml"));
+	
 	private static Location spawn;
 	private static Map<UUID, ParticleFormat> particleformats = new HashMap<>();
 	private static Set<UUID> wings = new HashSet<>();
 	private static Map<String, Achievement> achievements = new HashMap<>();
+	private static Map<UUID, String> uuids= new HashMap<>();
+	private static Map<String, String> ipPlayers= new HashMap<>();
 	private static Map<UUID, ArrayList<Achievement>> playerAchievements = new HashMap<>();
 	private static BukkitTask task;
 	public static int note = 0;
+	private static IDatabase connection;
 	private static char[] alphebet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
 			'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
 			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+	
+	
+	public static void start() {
+		startMainTimer();
+		
+		connection = new IDatabase("db4free.net", "eridaunistats", 3306, "eridauniadmin", "password");
+		if(connection.init())
+			Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lSQL &f>&7 SQL connected...")));
+		else Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lSQL &f>&7 SQL not connected...")));
+		
+		
+
+		try {
+			String encodedSpawn = Main.getPlugin().getConfig().getString("Spawn");
+			String[] ds = encodedSpawn.split(":");
+			spawn = new Location(Bukkit.getWorld(ds[0]), Float.parseFloat(ds[1]), Float.parseFloat(ds[2]),
+					Float.parseFloat(ds[3]), Float.parseFloat(ds[4]), Float.parseFloat(ds[5]));
+		} catch (NullPointerException ex) {
+			spawn = Bukkit.getWorld("world").getSpawnLocation();
+		}
+
+		updateAchievements();
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			loadAchievements(player);
+		}
+		createGamers();
+
+		Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lServer &f>&7 Hub enabled!")));
+
+	}
+
+	private static void createGamers() {
+		for (Player player : Bukkit.getOnlinePlayers())
+			createNewGamer(player);
+	}
+
+	public static void end() {
+		unloadAchievements();
+		
+		
+		String sspawn = spawn.getWorld().getName() + ":" + spawn.getX() + ":" + spawn.getY() + ":" + spawn.getZ() + ":"
+				+ spawn.getYaw() + ":" + spawn.getPitch();
+		Main.getPlugin().getConfig().set("Spawn", sspawn);
+		Main.getPlugin().saveConfig();
+		
+		for(Entry<UUID,String> entry : uuids.entrySet()){
+			playerFile.set(entry.getKey() +"", entry.getValue());
+		}
+		for(Entry<String,String> entry : ipPlayers.entrySet()){
+			playerFile.set(entry.getKey() +"", entry.getValue());
+		}
+	}
+	
+	
+	
 
 	public static String colorize(String message) {
 		return ChatColor.translateAlternateColorCodes('&', message);
@@ -210,45 +278,7 @@ public class Utils {
 
 	}
 
-	public static void start() {
-		startMainTimer();
-		
-		
-		
-
-		try {
-			String encodedSpawn = Main.getPlugin().getConfig().getString("Spawn");
-			String[] ds = encodedSpawn.split(":");
-			spawn = new Location(Bukkit.getWorld(ds[0]), Float.parseFloat(ds[1]), Float.parseFloat(ds[2]),
-					Float.parseFloat(ds[3]), Float.parseFloat(ds[4]), Float.parseFloat(ds[5]));
-		} catch (NullPointerException ex) {
-			spawn = Bukkit.getWorld("world").getSpawnLocation();
-		}
-
-		updateAchievements();
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			loadAchievements(player);
-		}
-		createGamers();
-
-		Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lServer &f>&7 Hub enabled!")));
-
-	}
-
-	private static void createGamers() {
-		for (Player player : Bukkit.getOnlinePlayers())
-			createNewGamer(player);
-	}
-
-	public static void end() {
-		unloadAchievements();
-		
-		
-		String sspawn = spawn.getWorld().getName() + ":" + spawn.getX() + ":" + spawn.getY() + ":" + spawn.getZ() + ":"
-				+ spawn.getYaw() + ":" + spawn.getPitch();
-		Main.getPlugin().getConfig().set("Spawn", sspawn);
-		Main.getPlugin().saveConfig();
-	}
+	
 
 	public static Gamer createNewGamer(Player player) {
 		if (!gamers.containsKey(player.getUniqueId())) {
@@ -352,7 +382,7 @@ public class Utils {
 			player.sendMessage(Utils.colorize("&e&lGadgets &f>&7 You have lost your wings."));
 		} else {
 			wings.add(player.getUniqueId());
-			player.playSound(player.getLocation(), Sound.ENDERDRAGON_WINGS, 10, 10);
+			player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 10, 10);
 			player.setAllowFlight(true);
 			player.setFlying(true);
 
@@ -478,8 +508,11 @@ public class Utils {
 
 		inv.addItem(new ItemStack(Material.ARROW), "&7Next Page ->", 'Y', null, (short) 0);
 
-		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'B', 'C', 'D', 'E',
-				'F', 'G', 'X', 'X', 'O', 'H', 'I', 'J', 'K', 'L', 'P', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+		inv.setConfiguration(new char[] { 
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+				'X', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'X',
+				'X', 'O', 'H', 'I', 'J', 'K', 'L', 'P', 'X',
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
 				'X', 'X', 'X', 'M', 'X', 'N', 'X', 'Y', 'X',
 
 		});
@@ -534,11 +567,14 @@ public class Utils {
 		inv.addItem(new ItemStack(Material.POTION), "&a&lSpiral", 'H', null, (short) 0);
 		inv.addItem(new ItemStack(Material.REDSTONE), "&c&lBlood Helix", 'I', null, (short) 0);
 		inv.addItem(new ItemStack(Material.SNOW_BALL), "&e&lShpere", 'J', null, (short) 0);
+		inv.addItem(new ItemStack(Material.SHIELD), "&c&lForcefield", 'K', null, (short) 0);
+		
+		inv.addItem(Utils.getGamer(player).getSkull(), "&a&lCircle Player", 'L', new String[] {"&7Suggested by &oLord_Hyperion&7."}, (short) 3);
 
 		inv.setConfiguration(new char[] { 
 				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
 				'X', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'X',
-				'X', 'X', 'X', 'H', 'I', 'J', 'X', 'X', 'X',
+				'X', 'X', 'I', 'H', 'L', 'J', 'K', 'X', 'X',
 				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
 
 		});
@@ -673,6 +709,125 @@ public class Utils {
 	public static Player getRecent(Player sender) {
 		return Bukkit.getPlayer(recents.get(sender.getUniqueId()));
 	}
+
+	public static String checkAddress(InetAddress address) {
+		String ip = address.toString().replaceFirst("/", "").split(":")[0];
+		try{
+			ResultSet set = connection.query("SELECT NAME FROM Users WHERE IP='" + ip + "'");
+			set.next();
+			if(set.getObject(1) == null) return "NO";
+			else return "YES";
+		}catch(Exception ex){
+			return "NO";
+		}
+		
+	}
+	
+	public static String getPlayerFromAddress(InetAddress address) {
+		String ip = address.toString().replaceFirst("/", "").split(":")[0];
+		try{
+			ResultSet set = connection.query("SELECT NAME FROM Users WHERE IP='" + ip + "'");
+			set.next();
+			return ((String) set.getObject(1));
+		}catch(Exception ex){
+			return "N/A";
+		}
+	}
+
+	public static void cachePlayer(Player player) {
+		IDatabase sql = Utils.getConnection();
+		int r = sql.update("UPDATE Users SET UUID='" + player.getUniqueId() + "',COIN=" + Utils.getCoins(player) + ",FRIENDS='" + Utils.getFriends(player) + "',NAME='" + player.getName() + "',IP='" + Utils.getPlayerAddress(player) + "' WHERE UUID='" + player.getUniqueId() +"'");
+		
+		if(r <= 0){
+			sql.update("INSERT INTO Users (UUID,COIN,FRIENDS,NAME,IP) VALUES ('" + player.getUniqueId() + "',0,'','" + player.getName() + "','" + Utils.getPlayerAddress(player) + "')");
+		
+		}
+	}
+
+	public static String getPlayerAddress(Player player) {
+		return ((String) player.getAddress().toString()).replaceFirst("/", "").split(":")[0];
+	}
+
+	public static String getFriends(Player player) {
+		try {
+			ResultSet set = connection.query("SELECT FRIENDS FROM Users WHERE UUID='" + player.getUniqueId() + "'");
+			set.next();
+			String friends = ((String) set.getObject(1));
+			return friends;
+		} catch (Exception e) {
+			return "";
+		}
+		
+	}
+
+	public static Object getCoins(Player player) {
+		try {
+			ResultSet set = connection.query("SELECT COINS FROM Users WHERE UUID='?'", player.getUniqueId());
+		
+			return set.getObject(1);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	public static IDatabase getConnection() {
+		return connection;
+	}
+	
+	public static void openFriendMenu(Player player){
+		InventoryCreator inv = new InventoryCreator("&1&lFriend Menu", player, 27);
+		
+		inv.addItem(new ItemStack(Material.SKULL_ITEM), "&a&lAdd Friend", 'A', null, (short) 3);
+		inv.addItem(new ItemStack(Material.PAPER), "&3&lShow All Friends", 'B', null, (short) 0);
+		inv.addItem(new ItemStack(Material.BARRIER), "&c&lRemove Friend", 'C', null, (short) 0);
+		
+
+		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&Click an option.", 'X', null, (short) 0);
+		char[] config = new char[]{
+				'X','X','X','X','X','X','X','X','X',
+				'X','A','X','X','B','X','X','C','X',
+				'X','X','X','X','X','X','X','X','X'
+		};
+		inv.setConfiguration(config);
+		player.openInventory(inv.getInventory());
+	}
+
+	public static void openFriendListMenu(Player player) {
+		InventoryCreator inv = new InventoryCreator("&1&lFriends", player, 45);
+
+		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&7Nothing.", 'X',
+				new String[] { "&7Nothing here yet. Check back layer. :-)" }, (short) 0);
+		int i = 1;
+		ArrayList<Character> storage = new ArrayList<>();
+		
+		String[] friends = Utils.getFriends(player).split(",");
+		for(String f : friends){
+			ItemStack head = new ItemStack(Material.SKULL_ITEM);
+			SkullMeta meta = (SkullMeta) head.getItemMeta();
+			meta.setOwner(f);
+			head.setItemMeta(meta);
+			inv.addItem(head, "&e&l" + f, getAlphebet(i), null, (short) 3);
+			storage.add(getAlphebet(i));
+			i=i+1;
+			}
+		if (i < 45)
+			for (int ii = 0; ii != 46 - i;) {
+				storage.add('X');
+				ii = ii + 1;
+			}
+		inv.setConfiguration(storage);
+		player.openInventory(inv.getInventory());
+	}
+
+	public static String getPlayerDisplayName(PermissionUser player) {
+		return colorize(player.getPrefix() + player.getName());
+	}
+	public static String getPlayerDisplayName(Player player) {
+		PermissionUser user = PermissionsEx.getUser(player);
+		return colorize(user.getPrefix() + user.getName());
+	}
+
+	
 	
 	
 }

@@ -32,8 +32,8 @@ public class CircleBody implements Runnable {
 		l = Utils.getCircleLocation(Utils.getParticleTimer(player), 1.0, player.getEyeLocation());
 		l2 = Utils.getCircleLocation2(Utils.getParticleTimer(player), 1.0, player.getEyeLocation());
 		
-		l.setY(l.getY()-0.5);
-		l2.setY(l2.getY()-0.5);
+		l.setY(l.getY()-0.75);
+		l2.setY(l2.getY()-0.75);
 		
 		Utils.displayParticle(player, l, players);
 		Utils.displayParticle(player, l2, players);
