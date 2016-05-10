@@ -43,7 +43,6 @@ public class ChatListener implements Listener {
 				query = query.replaceFirst("query:", "");
 				IDatabase sql = Utils.getConnection();
 				if(sql.init()){
-//					Bukkit.broadcastMessage("SQL is workin");
 					try{
 						ResultSet set = sql.query(query);
 						while(set.next()){
@@ -63,13 +62,7 @@ public class ChatListener implements Listener {
 					Bukkit.broadcastMessage(result + "");
 				}
 			}
-			if(query.startsWith("insert:")){
-				query = query.replaceFirst("insert:", "");
-				IDatabase sql = Utils.getConnection();
-				if(sql.init()){
-					
-				}
-			}
+			
 			
 			
 			

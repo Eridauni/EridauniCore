@@ -19,17 +19,12 @@ public class FriendsCommand implements CommandExecutor {
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("friends")) {
 			if(sender instanceof Player){
-				new Thread(() -> Utils.openFriendMenu((Player) sender)).start();
-//				Thread b = new Thread(new Runnable(){
-//					public void run(){
-//						Utils.openFriendMenu(((Player) sender));
-//					}
-//				});
-//				b.start();
-				
-				
+				new Thread(new Runnable(){
+					public void run(){
+						Utils.openFriendMenu(((Player) sender));
+					}
+				}).start();
 			}
-			
 		}
 		return true;
 	}

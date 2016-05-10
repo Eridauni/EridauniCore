@@ -2,29 +2,9 @@ package me.quickScythe.eridaunicore;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.quickScythe.eridaunicore.commands.AchievementCommand;
-import me.quickScythe.eridaunicore.commands.FriendsCommand;
-import me.quickScythe.eridaunicore.commands.HelpCommand;
-import me.quickScythe.eridaunicore.commands.MenuCommand;
-import me.quickScythe.eridaunicore.commands.ParticleColorCommand;
-import me.quickScythe.eridaunicore.commands.ParticleCommand;
-import me.quickScythe.eridaunicore.commands.ParticleFormatCommand;
-import me.quickScythe.eridaunicore.commands.ReplyCommand;
-import me.quickScythe.eridaunicore.commands.SpawnCommand;
-import me.quickScythe.eridaunicore.commands.TellCommand;
-import me.quickScythe.eridaunicore.commands.WingCommand;
-import me.quickScythe.eridaunicore.listeners.AchievementListener;
-import me.quickScythe.eridaunicore.listeners.AnvilListener;
-import me.quickScythe.eridaunicore.listeners.BlockListener;
-import me.quickScythe.eridaunicore.listeners.ChatListener;
-import me.quickScythe.eridaunicore.listeners.EntityListener;
-import me.quickScythe.eridaunicore.listeners.FriendListener;
-import me.quickScythe.eridaunicore.listeners.JoinListener;
-import me.quickScythe.eridaunicore.listeners.ParticleListener;
-import me.quickScythe.eridaunicore.listeners.PingListener;
-import me.quickScythe.eridaunicore.listeners.PlayerListener;
-import me.quickScythe.eridaunicore.listeners.SignListener;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.commands.*;
+import me.quickScythe.eridaunicore.listeners.*;
+import me.quickScythe.eridaunicore.utils.*;
 
 public class Main extends JavaPlugin {
 	
