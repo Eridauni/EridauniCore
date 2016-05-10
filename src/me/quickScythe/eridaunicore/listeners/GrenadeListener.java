@@ -1,6 +1,7 @@
 package me.quickScythe.eridaunicore.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,7 +21,8 @@ public class GrenadeListener implements Listener {
 	@EventHandler
 	public void onInventoryClose(PlayerInteractEvent e){
 		if(e.getItem().getItemMeta().getDisplayName().equals(Utils.colorize("&cGrenade"))){
-			MainTimer.grenades.add(new Grenade(e.getPlayer().getLocation(), e.getPlayer().getLocation().getYaw(), e.getPlayer().getLocation().getPitch()));
+			MainTimer.grenades.add(new Grenade(e.getPlayer().getEyeLocation(), e.getPlayer().getEyeLocation().getDirection()));
+			if(!e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) e.getPlayer().getItemInHand().setAmount(0);
 		}
 	}
 	

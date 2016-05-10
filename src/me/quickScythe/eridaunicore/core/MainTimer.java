@@ -13,6 +13,7 @@ import me.quickScythe.eridaunicore.utils.Utils;
 public class MainTimer extends BukkitRunnable {
 	
 	public static List<Grenade> grenades = new ArrayList<>();
+	public static List<Grenade> removeGrenades = new ArrayList<>();
 
 	public MainTimer(){
 		
@@ -24,6 +25,10 @@ public class MainTimer extends BukkitRunnable {
 		for(Grenade g : grenades){
 			g.updateLocation();
 		}
+		
+		for(Grenade r : removeGrenades)
+			grenades.remove(r);
+		removeGrenades.clear();
 		
 		for(Player player : Bukkit.getOnlinePlayers()){
 			if(Utils.getWingedPlayers().contains(player.getUniqueId())){
