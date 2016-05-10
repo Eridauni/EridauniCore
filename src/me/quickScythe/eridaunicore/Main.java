@@ -26,6 +26,7 @@ public class Main extends JavaPlugin {
 		new FriendsCommand(this, "friends");
 		new AchievementListener(this);
 		new ParticleListener(this);
+		new GrenadeListener(this);
 		new JoinListener(this);
 		new SignListener(this);
 		new PingListener(this);

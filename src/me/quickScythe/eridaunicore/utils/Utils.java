@@ -22,9 +22,12 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftShapedRecipe;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -94,6 +97,21 @@ public class Utils {
 			loadAchievements(player);
 		}
 		createGamers();
+		
+		ItemStack grenade = new ItemStack(Material.FIREWORK_CHARGE);
+		ItemMeta meta = grenade.getItemMeta();
+		meta.setDisplayName(colorize("&cGrenade"));
+		grenade.setItemMeta(meta);
+		
+		
+		
+		ShapedRecipe recipe = new ShapedRecipe(grenade);
+	    recipe.shape("XBX", 
+	    			 "BAB", 
+	    			 "XBX");
+	    recipe.setIngredient('A', Material.FIREWORK_CHARGE);
+	    recipe.setIngredient('B', Material.SULPHUR); 
+	    Bukkit.addRecipe(recipe);
 
 		Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lServer &f>&7 Hub enabled!")));
 
