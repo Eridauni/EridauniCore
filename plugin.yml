@@ -23,4 +23,6 @@ commands:
 
   friends:
     aliases: ["f"]
-    
+  grenade:
+    aliases: ["g"]
+  house:

@@ -24,6 +24,8 @@ public class Main extends JavaPlugin {
 		new TellCommand(this, "tell");
 		new ReplyCommand(this, "reply");
 		new FriendsCommand(this, "friends");
+		new GrenadeCommand(this, "grenade");
+		new HouseCommand(this, "house");
 		new AchievementListener(this);
 		new ParticleListener(this);
 		new GrenadeListener(this);

@@ -845,6 +845,26 @@ public class Utils {
 		return colorize(user.getPrefix() + user.getName());
 	}
 
+	public static void openHouseMenu(Player player) {
+		
+		InventoryCreator inv = new InventoryCreator(colorize("&6House Menu"), player, 27);
+		
+		inv.addItem(new ItemStack(Material.THIN_GLASS), "&7Click Option", 'X', null, (short) 15);
+		
+		inv.addItem(new ItemStack(Material.SIGN), "&eMake House", 'A', null, (short) 0);
+		inv.addItem(new ItemStack(Material.SIGN), "&cUpgrade House", 'B', null, (short) 0);
+		inv.addItem(new ItemStack(Material.SIGN), "&4&lClose", 'Z', null, (short) 0);
+		
+		
+		inv.setConfiguration(new char[]{
+				'X','X','X','X','X','X','X','X','X',
+				'X','A','X','X','X','X','X','B','X',
+				'X','X','X','X','Z','X','X','X','X'
+		});
+		
+		player.openInventory(inv.getInventory());
+	}
+
 	
 	
 	
