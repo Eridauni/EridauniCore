@@ -15,6 +15,7 @@ public class JoinListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){
+		e.setJoinMessage(Utils.getPlayerDisplayName(e.getPlayer()) + " &7has joined.");
 		Utils.cachePlayer(e.getPlayer());
 	}
 	

@@ -1,5 +1,5 @@
 name: EridauniCore
-version: 0.0.1
+version: 2.4.1
 author: QuickScythe
 description: Core plugin for all of the Eridauni server.
 main: me.quickScythe.eridaunicore.Main
@@ -26,3 +26,4 @@ commands:
   grenade:
     aliases: ["g"]
   house:
+  update:

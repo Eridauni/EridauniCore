@@ -849,11 +849,11 @@ public class Utils {
 		
 		InventoryCreator inv = new InventoryCreator(colorize("&6House Menu"), player, 27);
 		
-		inv.addItem(new ItemStack(Material.THIN_GLASS), "&7Click Option", 'X', null, (short) 15);
+		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&7Click Option", 'X', null, (short) 15);
 		
 		inv.addItem(new ItemStack(Material.SIGN), "&eMake House", 'A', null, (short) 0);
-		inv.addItem(new ItemStack(Material.SIGN), "&cUpgrade House", 'B', null, (short) 0);
-		inv.addItem(new ItemStack(Material.SIGN), "&4&lClose", 'Z', null, (short) 0);
+		inv.addItem(new ItemStack(Material.DIAMOND), "&cUpgrade House", 'B', null, (short) 0);
+		inv.addItem(new ItemStack(Material.BARRIER), "&4&lClose", 'Z', null, (short) 0);
 		
 		
 		inv.setConfiguration(new char[]{
@@ -863,6 +863,12 @@ public class Utils {
 		});
 		
 		player.openInventory(inv.getInventory());
+	}
+
+	public static void registerHouse(Player player) {
+//		if(getConnection().init()){
+//			getConnection().update("")
+//		}
 	}
 
 	
