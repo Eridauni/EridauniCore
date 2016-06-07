@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,12 +23,11 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftShapedRecipe;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -856,6 +856,21 @@ public class CoreUtils {
 //		if(getConnection().init()){
 //			getConnection().update("")
 //		}
+	}
+	
+	public static Firework createFirework(Location location, FireworkEffect ef){
+		
+		Firework f = location.getWorld().spawn(location, Firework.class);
+		
+		FireworkMeta fw = f.getFireworkMeta();
+		
+		fw.clearEffects();
+		
+		fw.addEffect(ef);
+		
+		f.setFireworkMeta(fw);
+		return f;
+		
 	}
 
 	
