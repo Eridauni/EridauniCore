@@ -27,3 +27,4 @@ commands:
     aliases: ["g"]
   house:
   update:
+  rename:

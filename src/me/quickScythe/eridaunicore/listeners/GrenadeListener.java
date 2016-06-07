@@ -22,7 +22,10 @@ public class GrenadeListener implements Listener {
 	
 	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void onInventoryClose(PlayerInteractEvent e){
+	public void onPlayerInteractEvent(PlayerInteractEvent e){
+		if(e.getItem() == null) return;
+		if(e.getItem().getItemMeta() == null) return;
+		if(e.getItem().getItemMeta().getDisplayName() == null) return;
 		if(e.getItem().getItemMeta().getDisplayName().equals(CoreUtils.colorize("&cGrenade"))){
 			MainTimer.grenades.add(new Grenade(e.getPlayer().getEyeLocation(), e.getPlayer().getEyeLocation().getDirection()));
 			if(!e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) e.getPlayer().setItemInHand(null);

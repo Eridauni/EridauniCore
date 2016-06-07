@@ -683,11 +683,14 @@ public class CoreUtils {
 		// Create the AnvilContainer
 		ContainerAnvil container = new FakeAnvil(p);
 
-		// Set the items to the items from the inventory given
-		container.getBukkitView().getTopInventory().setItem(0, inventory.getItem(0));
-		container.getBukkitView().getTopInventory().setItem(1, inventory.getItem(1));
-		// container.getBukkitView().getTopInventory().setItem(2,
-		// inventory.getItem(2));
+		if(inventory != null){
+			// Set the items to the items from the inventory given
+			container.getBukkitView().getTopInventory().setItem(0, inventory.getItem(0));
+			container.getBukkitView().getTopInventory().setItem(1, inventory.getItem(1));
+			// container.getBukkitView().getTopInventory().setItem(2,
+			// inventory.getItem(2));
+		}
+		
 
 		// Counter stuff that the game uses to keep track of inventories
 		int c = p.nextContainerCounter();

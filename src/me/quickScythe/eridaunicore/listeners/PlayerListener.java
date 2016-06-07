@@ -23,14 +23,6 @@ public class PlayerListener implements Listener {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 	
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent e){
-		if(!e.getPlayer().getItemInHand().getType().equals(Material.NETHER_STAR)) return;
-		if(e.getPlayer().isGliding() && ChatColor.stripColor(e.getPlayer().getItemInHand().getItemMeta().getDisplayName()).equals("Elytra Boost")){
-			Vector unitVector = e.getPlayer().getVelocity().add(e.getPlayer().getEyeLocation().getDirection());
-	        e.getPlayer().setVelocity((unitVector.multiply(0.5)));
-		}
-	}
 	
 	
 	@EventHandler

@@ -27,6 +27,7 @@ public class Main extends JavaPlugin {
 		new GrenadeCommand(this, "grenade");
 		new HouseCommand(this, "house");
 		new UpdateCommand(this, "update");
+		new RenameCommand(this, "rename");
 		new AchievementListener(this);
 		new ParticleListener(this);
 		new GrenadeListener(this);
