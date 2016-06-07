@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class HouseCommand implements CommandExecutor {
 	Main plugin;
@@ -19,7 +19,7 @@ public class HouseCommand implements CommandExecutor {
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("house")) {
 			if(sender instanceof Player){
-				Utils.openHouseMenu(((Player)sender));
+				CoreUtils.openHouseMenu(((Player)sender));
 			}
 		}
 		return true;

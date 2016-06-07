@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class Spiral implements Runnable {
 	Player player;
@@ -24,16 +24,16 @@ public class Spiral implements Runnable {
 		int i;
 		double y = 0;
 		try{
-			i = Utils.getParticleTimer(player);
+			i = CoreUtils.getParticleTimer(player);
 		} catch(NullPointerException ex){
-			Utils.setParticleTimer(player, 0);
+			CoreUtils.setParticleTimer(player, 0);
 			i=0;
 			
 		}
 		if(i>60){
-			Double[] info = Utils.helixMath(player);
+			Double[] info = CoreUtils.helixMath(player);
 			if(info == null){
-				Utils.setHelixMath(player, 1, 0);
+				CoreUtils.setHelixMath(player, 1, 0);
 				return;
 			}
 			y = info[0];
@@ -47,11 +47,11 @@ public class Spiral implements Runnable {
 		players.add(player);
 		
 		if(i<60){
-			l = Utils.getCircleLocation(i, (i*0.025), player.getLocation());
-			l2 = Utils.getCircleLocation2(i, (i*0.025), player.getLocation());
+			l = CoreUtils.getCircleLocation(i, (i*0.025), player.getLocation());
+			l2 = CoreUtils.getCircleLocation2(i, (i*0.025), player.getLocation());
 		} else {
-			l = Utils.getCircleLocation(i, (1.475+(y-1)*-0.025D), player.getLocation());
-			l2 = Utils.getCircleLocation2(i, (1.475+(y-1)*-0.025D), player.getLocation());
+			l = CoreUtils.getCircleLocation(i, (1.475+(y-1)*-0.025D), player.getLocation());
+			l2 = CoreUtils.getCircleLocation2(i, (1.475+(y-1)*-0.025D), player.getLocation());
 		}
 		
 		
@@ -60,15 +60,15 @@ public class Spiral implements Runnable {
 		
 		
 		
-		Utils.displayParticle(player, l, players);
-		Utils.displayParticle(player, l2, players);
+		CoreUtils.displayParticle(player, l, players);
+		CoreUtils.displayParticle(player, l2, players);
 		
-		Utils.setHelixMath(player, y+1, 0);
+		CoreUtils.setHelixMath(player, y+1, 0);
 		if(i==120){
-			Utils.setHelixMath(player, 0, 0);
-			Utils.setParticleTimer(player, 0);
+			CoreUtils.setHelixMath(player, 0, 0);
+			CoreUtils.setParticleTimer(player, 0);
 		}
-		else Utils.setParticleTimer(player, i+1);
+		else CoreUtils.setParticleTimer(player, i+1);
 		
 		players = null;
 	}

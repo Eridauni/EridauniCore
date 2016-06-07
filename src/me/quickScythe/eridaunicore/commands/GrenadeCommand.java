@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 import me.quickScythe.eridaunicore.Main;
 
@@ -28,7 +28,7 @@ public class GrenadeCommand implements CommandExecutor {
 				else g = new ItemStack(Material.FIREWORK_CHARGE, 1, (short)0);
 				
 				ItemMeta meta = g.getItemMeta();
-				meta.setDisplayName(Utils.colorize("&cGrenade"));
+				meta.setDisplayName(CoreUtils.colorize("&cGrenade"));
 				g.setItemMeta(meta);
 				((Player) sender).getInventory().addItem(g);
 			}

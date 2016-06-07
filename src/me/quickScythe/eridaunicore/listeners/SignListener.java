@@ -5,7 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class SignListener implements Listener {
 	Main plugin;
@@ -15,11 +15,11 @@ public class SignListener implements Listener {
 	}
 	@EventHandler
 	public void onSignChange(SignChangeEvent e){
-		//SignUtils.colorize((Sign) e.getBlock().getState()); 
-		e.setLine(0, Utils.colorize(e.getLine(0)));
-		e.setLine(1, Utils.colorize(e.getLine(1)));
-		e.setLine(2, Utils.colorize(e.getLine(2)));
-		e.setLine(3, Utils.colorize(e.getLine(3)));
+		//SignCoreUtils.colorize((Sign) e.getBlock().getState()); 
+		e.setLine(0, CoreUtils.colorize(e.getLine(0)));
+		e.setLine(1, CoreUtils.colorize(e.getLine(1)));
+		e.setLine(2, CoreUtils.colorize(e.getLine(2)));
+		e.setLine(3, CoreUtils.colorize(e.getLine(3)));
 	}
 	
 	

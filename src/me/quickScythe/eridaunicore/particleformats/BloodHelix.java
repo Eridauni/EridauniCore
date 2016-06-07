@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class BloodHelix implements Runnable {
 	Player player;
@@ -24,15 +24,15 @@ public class BloodHelix implements Runnable {
 		double y = 0;
 		double up = 0;
 		try{
-			i = Utils.getParticleTimer(player);
+			i = CoreUtils.getParticleTimer(player);
 		} catch(NullPointerException ex){
-			Utils.setParticleTimer(player, 0);
+			CoreUtils.setParticleTimer(player, 0);
 			i=0;
 			
 		}
-		Double[] info = Utils.helixMath(player);
+		Double[] info = CoreUtils.helixMath(player);
 		if(info == null){
-			Utils.setHelixMath(player, 1, 0);
+			CoreUtils.setHelixMath(player, 1, 0);
 			return;
 		}
 		y = info[0];
@@ -49,12 +49,12 @@ public class BloodHelix implements Runnable {
 		
 		
 		if(i<40){
-			l = Utils.getCircleLocation(i, (i*0.025), new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY()+3) + up, player.getLocation().getZ()));
-			l2 = Utils.getCircleLocation2(i, (i*0.025), new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY()+3) + up, player.getLocation().getZ()));
+			l = CoreUtils.getCircleLocation(i, (i*0.025), new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY()+3) + up, player.getLocation().getZ()));
+			l2 = CoreUtils.getCircleLocation2(i, (i*0.025), new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY()+3) + up, player.getLocation().getZ()));
 			up = up- (0.075);
 		} else {
-			l = Utils.getCircleLocation(i, (1+(y-1)*-0.025D), new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY()+3 ) + up, player.getLocation().getZ()));
-			l2 = Utils.getCircleLocation2(i, (1+(y-1)*-0.025D), new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY()+3) + up, player.getLocation().getZ()));
+			l = CoreUtils.getCircleLocation(i, (1+(y-1)*-0.025D), new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY()+3 ) + up, player.getLocation().getZ()));
+			l2 = CoreUtils.getCircleLocation2(i, (1+(y-1)*-0.025D), new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY()+3) + up, player.getLocation().getZ()));
 			up = up + (0.075);
 			y = y +1;
 		}
@@ -65,15 +65,15 @@ public class BloodHelix implements Runnable {
 		
 		
 		
-		Utils.displayParticle(player, l, players);
-		Utils.displayParticle(player, l2, players);
+		CoreUtils.displayParticle(player, l, players);
+		CoreUtils.displayParticle(player, l2, players);
 		
-		Utils.setHelixMath(player, y, up);
+		CoreUtils.setHelixMath(player, y, up);
 		if(i==80){
-			Utils.setHelixMath(player, 0, 0);
-			Utils.setParticleTimer(player, 0);
+			CoreUtils.setHelixMath(player, 0, 0);
+			CoreUtils.setParticleTimer(player, 0);
 		}
-		else Utils.setParticleTimer(player, i+1);
+		else CoreUtils.setParticleTimer(player, i+1);
 		
 		players = null;
 	}

@@ -5,7 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class JoinListener implements Listener {
 	Main plugin;
@@ -15,8 +15,8 @@ public class JoinListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){
-		e.setJoinMessage(Utils.getPlayerDisplayName(e.getPlayer()) + " &7has joined.");
-		Utils.cachePlayer(e.getPlayer());
+		e.setJoinMessage(CoreUtils.getPlayerDisplayName(e.getPlayer()) + " &7has joined.");
+		CoreUtils.cachePlayer(e.getPlayer());
 	}
 	
 	

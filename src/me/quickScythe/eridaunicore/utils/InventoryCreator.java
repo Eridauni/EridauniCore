@@ -25,7 +25,7 @@ public class InventoryCreator {
 	public InventoryCreator(String name, Player holder, int size) {
 		this.name = name;
 		this.holder = holder;
-		inv = Bukkit.createInventory(holder, size, Utils.colorize(name));
+		inv = Bukkit.createInventory(holder, size, CoreUtils.colorize(name));
 	}
 
 	public void addItem(ItemStack item, String name, char identifier, String[] lore, short value) {
@@ -33,11 +33,11 @@ public class InventoryCreator {
 		if(item!=null && (item.getType() != Material.AIR)){
 			item.setDurability(value);
 			ItemMeta im = item.getItemMeta();
-			im.setDisplayName(Utils.colorize(name));
+			im.setDisplayName(CoreUtils.colorize(name));
 			if(lore != null){
 				List<String> list = new ArrayList<>();
 				for(String s : lore){
-					s = Utils.colorize(s);
+					s = CoreUtils.colorize(s);
 					list.add(s);
 				}
 				im.setLore(list);
@@ -52,11 +52,11 @@ public class InventoryCreator {
 		if(item!=null && (item.getType() != Material.AIR)){
 			item.setDurability(value);
 			ItemMeta im = item.getItemMeta();
-			im.setDisplayName(Utils.colorize(name));
+			im.setDisplayName(CoreUtils.colorize(name));
 			if(lore != null){
 				List<String> list = new ArrayList<>();
 				for(String s : lore){
-					s = Utils.colorize(s);
+					s = CoreUtils.colorize(s);
 					list.add(s);
 				}
 				im.setLore(list);
@@ -72,7 +72,7 @@ public class InventoryCreator {
 	public void editItem(char identifier, String name){
 		ItemStack item = this.identifier.get(identifier);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(Utils.colorize(name));
+		meta.setDisplayName(CoreUtils.colorize(name));
 		item.setItemMeta(meta);
 		this.identifier.put(identifier, item);
 	}

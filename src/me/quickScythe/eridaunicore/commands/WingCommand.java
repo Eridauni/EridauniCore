@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class WingCommand implements CommandExecutor {
 	Main plugin;
@@ -17,7 +17,7 @@ public class WingCommand implements CommandExecutor {
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(cmd.getName().equalsIgnoreCase("wings") && sender instanceof Player){
-			Utils.toggleWings(((Player) sender));
+			CoreUtils.toggleWings(((Player) sender));
 		}		
 		return false;
 	}

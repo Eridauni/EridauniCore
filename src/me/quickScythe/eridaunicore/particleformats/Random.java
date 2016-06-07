@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class Random implements Runnable {
 	Player player;
@@ -27,7 +27,7 @@ public class Random implements Runnable {
 				player.getLocation().getZ() - 1 + Double.parseDouble(((getRandomInt(2)) + "."+ (getRandomInt(99)))));
 		
 	
-		Utils.displayParticle(player, l, players);
+		CoreUtils.displayParticle(player, l, players);
 		
 		players = null;
 	}

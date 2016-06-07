@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class ParticleFormatCommand implements CommandExecutor {
 	Main plugin;
@@ -16,9 +16,9 @@ public class ParticleFormatCommand implements CommandExecutor {
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(cmd.getName().equalsIgnoreCase("particleformat") && sender.hasPermission("vip.particle") && sender instanceof Player){
-			((Player) sender).openInventory(Utils.getParticleFormatInventory(((Player) sender)));
+			((Player) sender).openInventory(CoreUtils.getParticleFormatInventory(((Player) sender)));
 		}
-		if(!sender.hasPermission("vip.particle")) sender.sendMessage(Utils.colorize("&e&lParticle &f>&7 Sorry, but you don't have the permission to do that."));
+		if(!sender.hasPermission("vip.particle")) sender.sendMessage(CoreUtils.colorize("&e&lParticle &f>&7 Sorry, but you don't have the permission to do that."));
 		return true;	
 	}
 }

@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class CirclePlayer implements Runnable {
 	Player player;
@@ -20,9 +20,9 @@ public class CirclePlayer implements Runnable {
 	public void run() {
 		int i;
 		try{
-			i = Utils.getParticleTimer(player);
+			i = CoreUtils.getParticleTimer(player);
 		} catch(NullPointerException ex){
-			Utils.setParticleTimer(player, 0);
+			CoreUtils.setParticleTimer(player, 0);
 			i=0;
 		}
 		List<Player> players = new ArrayList<Player>();
@@ -35,21 +35,21 @@ public class CirclePlayer implements Runnable {
 		
 		Location feet = new Location(eyes.getWorld(), eyes.getX(), eyes.getY()-1.5, eyes.getZ());
 		
-		particles.add(Utils.getCircleLocation(Utils.getParticleTimer(player), 1.0, eyes));
-		particles.add(Utils.getCircleLocation2(Utils.getParticleTimer(player), 1.0, eyes));
-		particles.add(Utils.getCircleLocation(Utils.getParticleTimer(player), 1.0, body));
-		particles.add(Utils.getCircleLocation2(Utils.getParticleTimer(player), 1.0, body));
-		particles.add(Utils.getCircleLocation(Utils.getParticleTimer(player), 1.0, feet));
-		particles.add(Utils.getCircleLocation2(Utils.getParticleTimer(player), 1.0, feet));
+		particles.add(CoreUtils.getCircleLocation(CoreUtils.getParticleTimer(player), 1.0, eyes));
+		particles.add(CoreUtils.getCircleLocation2(CoreUtils.getParticleTimer(player), 1.0, eyes));
+		particles.add(CoreUtils.getCircleLocation(CoreUtils.getParticleTimer(player), 1.0, body));
+		particles.add(CoreUtils.getCircleLocation2(CoreUtils.getParticleTimer(player), 1.0, body));
+		particles.add(CoreUtils.getCircleLocation(CoreUtils.getParticleTimer(player), 1.0, feet));
+		particles.add(CoreUtils.getCircleLocation2(CoreUtils.getParticleTimer(player), 1.0, feet));
 		
 		
 		for(Location l : particles)
-			Utils.displayParticle(player, l, players);
+			CoreUtils.displayParticle(player, l, players);
 		
 		
 		
-		if(i==31) Utils.setParticleTimer(player, 0);
-		else Utils.setParticleTimer(player, i+1);
+		if(i==31) CoreUtils.setParticleTimer(player, 0);
+		else CoreUtils.setParticleTimer(player, i+1);
 		players = null;
 		feet = null;
 		eyes = null;

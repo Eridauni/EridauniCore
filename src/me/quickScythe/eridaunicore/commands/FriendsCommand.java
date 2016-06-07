@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class FriendsCommand implements CommandExecutor {
 	Main plugin;
@@ -21,7 +21,7 @@ public class FriendsCommand implements CommandExecutor {
 			if(sender instanceof Player){
 				new Thread(new Runnable(){
 					public void run(){
-						Utils.openFriendMenu(((Player) sender));
+						CoreUtils.openFriendMenu(((Player) sender));
 					}
 				}).start();
 			}

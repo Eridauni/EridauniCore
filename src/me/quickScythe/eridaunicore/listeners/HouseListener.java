@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 
 public class HouseListener implements Listener {
@@ -24,7 +24,7 @@ public class HouseListener implements Listener {
 			String m = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
 			switch (m){
 			case "Make House":
-				Utils.registerHouse(((Player) e.getWhoClicked()));
+				CoreUtils.registerHouse(((Player) e.getWhoClicked()));
 				break;
 			}
 			e.setCancelled(true);

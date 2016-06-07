@@ -9,7 +9,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.quickScythe.eridaunicore.Main;
 import me.quickScythe.eridaunicore.utils.IDatabase;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
@@ -24,15 +24,15 @@ public class ChatListener implements Listener {
 		PermissionUser player = PermissionsEx.getUser(e.getPlayer());
 		String message = e.getMessage();
 		if(player.has("chat.color")){
-			message = Utils.colorize(message);
+			message = CoreUtils.colorize(message);
 		}
-		e.setFormat(Utils.colorize(player.getPrefix() + player.getName() + " &f> &8" + player.getSuffix()) + message);
+		e.setFormat(CoreUtils.colorize(player.getPrefix() + player.getName() + " &f> &8" + player.getSuffix()) + message);
 		
 			String query = e.getMessage();
 			
 			if(query.equalsIgnoreCase("friends")){
 				
-				for(String f : Utils.getFriends(e.getPlayer()).split(","))
+				for(String f : CoreUtils.getFriends(e.getPlayer()).split(","))
 					Bukkit.broadcastMessage(f);
 				
 				
@@ -41,7 +41,7 @@ public class ChatListener implements Listener {
 			
 			if(query.startsWith("query:")){
 				query = query.replaceFirst("query:", "");
-				IDatabase sql = Utils.getConnection();
+				IDatabase sql = CoreUtils.getConnection();
 				if(sql.init()){
 					try{
 						ResultSet set = sql.query(query);
@@ -56,7 +56,7 @@ public class ChatListener implements Listener {
 			}
 			if(query.startsWith("update:")){
 				query = query.replaceFirst("update:", "");
-				IDatabase sql = Utils.getConnection();
+				IDatabase sql = CoreUtils.getConnection();
 				if(sql.init()){
 					int result = sql.update(query);
 					Bukkit.broadcastMessage(result + "");

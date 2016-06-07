@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.InventoryType;
 
 import me.quickScythe.eridaunicore.Main;
 import me.quickScythe.eridaunicore.utils.IDatabase;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class AnvilListener implements Listener {
 	Main plugin;
@@ -45,12 +45,12 @@ public class AnvilListener implements Listener {
 					if(Bukkit.getPlayer(e.getCurrentItem().getItemMeta().getDisplayName()) == null){
 						e.setCancelled(true);
 						player.closeInventory();
-						player.sendMessage(Utils.colorize("&e&lFriends &f>&7 Sorry. That player must be online to add them as a friend."));
+						player.sendMessage(CoreUtils.colorize("&e&lFriends &f>&7 Sorry. That player must be online to add them as a friend."));
 					} else {
-						IDatabase sql = Utils.getConnection();
-						int r = sql.update("UPDATE Users SET UUID='"+player.getUniqueId()+"',COIN="+Utils.getCoins(player)+",FRIENDS='"+Utils.getFriends(player) + "," + e.getCurrentItem().getItemMeta().getDisplayName()+"',NAME='"+player.getName()+"',IP='"+Utils.getPlayerAddress(player)+"' WHERE UUID='"+player.getUniqueId()+"'");
+						IDatabase sql = CoreUtils.getConnection();
+						int r = sql.update("UPDATE Users SET UUID='"+player.getUniqueId()+"',COIN="+CoreUtils.getCoins(player)+",FRIENDS='"+CoreUtils.getFriends(player) + "," + e.getCurrentItem().getItemMeta().getDisplayName()+"',NAME='"+player.getName()+"',IP='"+CoreUtils.getPlayerAddress(player)+"' WHERE UUID='"+player.getUniqueId()+"'");
 						if(r!=1)
-							player.sendMessage(Utils.colorize("&e&lFriends &f>&7 There was an error adding your friend."));	
+							player.sendMessage(CoreUtils.colorize("&e&lFriends &f>&7 There was an error adding your friend."));	
 					}
 					e.setCancelled(true);
 					player.closeInventory();
@@ -63,22 +63,22 @@ public class AnvilListener implements Listener {
 			if(e.getSlot() == 2){
 				if(player.hasMetadata("anvil")){
 					ArrayList<String> l = new ArrayList<String>();
-					for(String f : Utils.getFriends(player).split(","))
+					for(String f : CoreUtils.getFriends(player).split(","))
 						if(f!="")l.add(f);
 					if(!l.contains(e.getCurrentItem().getItemMeta().getDisplayName())){
 						e.setCancelled(true);
 						player.closeInventory();
-						player.sendMessage(Utils.colorize("&e&lFriends &f>&7 Sorry. That player is not in your friends list."));
+						player.sendMessage(CoreUtils.colorize("&e&lFriends &f>&7 Sorry. That player is not in your friends list."));
 					} else {
 						l.remove(e.getCurrentItem().getItemMeta().getDisplayName());
 						String f = "";
 						for(String a : l)
 							f = f+a + ",";
 						f = f.substring(0, f.length());
-						IDatabase sql = Utils.getConnection();
-						int r = sql.update("UPDATE Users SET UUID='"+player.getUniqueId()+"',COIN="+Utils.getCoins(player)+",FRIENDS='"+f+"',NAME='"+player.getName()+"',IP='"+Utils.getPlayerAddress(player)+"' WHERE UUID='"+player.getUniqueId()+"'");
+						IDatabase sql = CoreUtils.getConnection();
+						int r = sql.update("UPDATE Users SET UUID='"+player.getUniqueId()+"',COIN="+CoreUtils.getCoins(player)+",FRIENDS='"+f+"',NAME='"+player.getName()+"',IP='"+CoreUtils.getPlayerAddress(player)+"' WHERE UUID='"+player.getUniqueId()+"'");
 						if(r!=1)
-							player.sendMessage(Utils.colorize("&e&lFriends &f>&7 There was an error adding your friend."));	
+							player.sendMessage(CoreUtils.colorize("&e&lFriends &f>&7 There was an error adding your friend."));	
 					}
 					e.setCancelled(true);
 					player.closeInventory();

@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import me.quickScythe.eridaunicore.Main;
 import me.quickScythe.eridaunicore.utils.SQLUtils;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class EntityListener implements Listener {
 	Main plugin;
@@ -32,14 +32,14 @@ public class EntityListener implements Listener {
 					String message = "";
 					message = vmessages[new Random().nextInt(vmessages.length)];
 					message = message.replaceAll("%player%", e.getPlayer().getName());
-					e.getPlayer().sendMessage(Utils.colorize("&7Villager &f> &8" + message));
+					e.getPlayer().sendMessage(CoreUtils.colorize("&7Villager &f> &8" + message));
 				}
 				if(v.getCustomName().equalsIgnoreCase("Shop")){
 					e.setCancelled(true);
 					String message = "";
 					message = smessages[new Random().nextInt(smessages.length)];
 					message = message.replaceAll("%player%", e.getPlayer().getName());
-					e.getPlayer().sendMessage(Utils.colorize("&7Shopkeep &f> &8" + message));
+					e.getPlayer().sendMessage(CoreUtils.colorize("&7Shopkeep &f> &8" + message));
 					
 					ResultSet set = SQLUtils.sendQuery("SELECT * FROM Users");
 					

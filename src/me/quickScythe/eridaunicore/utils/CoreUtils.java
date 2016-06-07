@@ -47,7 +47,7 @@ import net.minecraft.server.v1_9_R1.PacketPlayOutOpenWindow;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-public class Utils {
+public class CoreUtils {
 
 	private static Map<UUID, Integer> particleTimer = new HashMap<>();
 	private static Map<UUID, Double[]> helixMathMap = new HashMap<>();
@@ -255,27 +255,27 @@ public class Utils {
 		colors.remove(player.getUniqueId());
 		String[] values = colorRGB.split(" ");
 		if (Integer.parseInt(values[0]) > 255) {
-			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour RED value is above 255."));
+			player.sendMessage(colorize("&e&lParticles &7> &fYour RED value is above 255."));
 			return;
 		}
 		if (Integer.parseInt(values[1]) > 255) {
-			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour GREEN value is above 255."));
+			player.sendMessage(colorize("&e&lParticles &7> &fYour GREEN value is above 255."));
 			return;
 		}
 		if (Integer.parseInt(values[2]) > 255) {
-			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour BLUE value is above 255."));
+			player.sendMessage(colorize("&e&lParticles &7> &fYour BLUE value is above 255."));
 			return;
 		}
 		if (Integer.parseInt(values[0]) < 0) {
-			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour RED value is below 0."));
+			player.sendMessage(colorize("&e&lParticles &7> &fYour RED value is below 0."));
 			return;
 		}
 		if (Integer.parseInt(values[1]) < 0) {
-			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour GREEN value is below 0."));
+			player.sendMessage(colorize("&e&lParticles &7> &fYour GREEN value is below 0."));
 			return;
 		}
 		if (Integer.parseInt(values[2]) < 0) {
-			player.sendMessage(Utils.colorize("&e&lParticles &7> &fYour BLUE value is below 0."));
+			player.sendMessage(colorize("&e&lParticles &7> &fYour BLUE value is below 0."));
 			return;
 		}
 
@@ -384,7 +384,7 @@ public class Utils {
 				player.setAllowFlight(false);
 			}
 			player.setFlying(false);
-			player.sendMessage(Utils.colorize("&e&lGadgets &f>&7 You have lost your wings."));
+			player.sendMessage(colorize("&e&lGadgets &f>&7 You have lost your wings."));
 		} else {
 			wings.add(player.getUniqueId());
 			player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 10, 10);
@@ -394,7 +394,7 @@ public class Utils {
 			player.teleport(new Location(player.getWorld(), player.getLocation().getX(),
 					player.getLocation().getY() + 0.1, player.getLocation().getZ(), player.getLocation().getYaw(),
 					player.getLocation().getPitch()));
-			player.sendMessage(Utils.colorize("&e&lGadgets &f>&7 You have been granted the ability to &f&lfly&7!"));
+			player.sendMessage(colorize("&e&lGadgets &f>&7 You have been granted the ability to &f&lfly&7!"));
 		}
 	}
 
@@ -574,7 +574,7 @@ public class Utils {
 		inv.addItem(new ItemStack(Material.SNOW_BALL), "&e&lShpere", 'J', null, (short) 0);
 		inv.addItem(new ItemStack(Material.SHIELD), "&c&lForcefield", 'K', null, (short) 0);
 		
-		inv.addItem(Utils.getGamer(player).getSkull(), "&a&lCircle Player", 'L', new String[] {"&7Suggested by &oLord_Hyperion&7."}, (short) 3);
+		inv.addItem(getGamer(player).getSkull(), "&a&lCircle Player", 'L', new String[] {"&7Suggested by &oLord_Hyperion&7."}, (short) 3);
 
 		inv.setConfiguration(new char[] { 
 				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
@@ -641,9 +641,9 @@ public class Utils {
 				new String[] { "&7Nothing here yet. Check back layer. :-)" }, (short) 0);
 		int i = 1;
 		ArrayList<Character> storage = new ArrayList<>();
-		for (Achievement achievement : Utils.getAchievements()) {
+		for (Achievement achievement : getAchievements()) {
 			String[] info = achievement.getItemInfo();
-			if (Utils.getGamer(player).hasAchievement(achievement))
+			if (getGamer(player).hasAchievement(achievement))
 				inv.addItem(new ItemStack(Material.getMaterial(info[0])), colorize("&a" + info[1]), getAlphebet(i),
 						new String[] { colorize("&7" + info[2]) }, Short.parseShort(info[3]));
 			else
@@ -740,11 +740,11 @@ public class Utils {
 	}
 
 	public static void cachePlayer(Player player) {
-		IDatabase sql = Utils.getConnection();
-		int r = sql.update("UPDATE Users SET UUID='" + player.getUniqueId() + "',COIN=" + Utils.getCoins(player) + ",FRIENDS='" + Utils.getFriends(player) + "',NAME='" + player.getName() + "',IP='" + Utils.getPlayerAddress(player) + "' WHERE UUID='" + player.getUniqueId() +"'");
+		IDatabase sql = getConnection();
+		int r = sql.update("UPDATE Users SET UUID='" + player.getUniqueId() + "',COIN=" + getCoins(player) + ",FRIENDS='" + getFriends(player) + "',NAME='" + player.getName() + "',IP='" + getPlayerAddress(player) + "' WHERE UUID='" + player.getUniqueId() +"'");
 		
 		if(r <= 0){
-			sql.update("INSERT INTO Users (UUID,COIN,FRIENDS,NAME,IP) VALUES ('" + player.getUniqueId() + "',0,'','" + player.getName() + "','" + Utils.getPlayerAddress(player) + "')");
+			sql.update("INSERT INTO Users (UUID,COIN,FRIENDS,NAME,IP) VALUES ('" + player.getUniqueId() + "',0,'','" + player.getName() + "','" + getPlayerAddress(player) + "')");
 		
 		}
 	}
@@ -805,7 +805,7 @@ public class Utils {
 		int i = 1;
 		ArrayList<Character> storage = new ArrayList<>();
 		
-		String[] friends = Utils.getFriends(player).split(",");
+		String[] friends = getFriends(player).split(",");
 		for(String f : friends){
 			ItemStack head = new ItemStack(Material.SKULL_ITEM);
 			SkullMeta meta = (SkullMeta) head.getItemMeta();

@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class DoubleHelix implements Runnable {
 	Player player;
@@ -21,19 +21,19 @@ public class DoubleHelix implements Runnable {
 	public void run() {
 		int i;
 		try{
-			i = Utils.getParticleTimer(player);
+			i = CoreUtils.getParticleTimer(player);
 		} catch(NullPointerException ex){
-			Utils.setParticleTimer(player, 0);
+			CoreUtils.setParticleTimer(player, 0);
 			i=0;
 		}
 		List<Player> players = new ArrayList<Player>();
 		for(Entity e : player.getNearbyEntities(50, 50, 50)) if(e instanceof Player) players.add((Player) e);
 		players.add(player);
-		l = Utils.getCircleLocation(i, 1.0, player.getLocation());
-		l2 = Utils.getCircleLocation2(i, 1.0, player.getLocation());
-		Double[] info = Utils.helixMath(player);
+		l = CoreUtils.getCircleLocation(i, 1.0, player.getLocation());
+		l2 = CoreUtils.getCircleLocation2(i, 1.0, player.getLocation());
+		Double[] info = CoreUtils.helixMath(player);
 		if(info == null){
-			Utils.setHelixMath(player, 0, 0);
+			CoreUtils.setHelixMath(player, 0, 0);
 			return;
 		}
 		double y = info[0];
@@ -55,14 +55,14 @@ public class DoubleHelix implements Runnable {
 		
 		
 		
-		Utils.displayParticle(player, new Location(l.getWorld(), l.getX(), l.getY()+y, l.getZ()), players);
-		Utils.displayParticle(player, new Location(l2.getWorld(), l2.getX(), l2.getY()+y, l2.getZ()), players);
+		CoreUtils.displayParticle(player, new Location(l.getWorld(), l.getX(), l.getY()+y, l.getZ()), players);
+		CoreUtils.displayParticle(player, new Location(l2.getWorld(), l2.getX(), l2.getY()+y, l2.getZ()), players);
 		
 		
 		
-		Utils.setHelixMath(player, y, up);
-		if(i==31) Utils.setParticleTimer(player, 0);
-		else Utils.setParticleTimer(player, i+1);
+		CoreUtils.setHelixMath(player, y, up);
+		if(i==31) CoreUtils.setParticleTimer(player, 0);
+		else CoreUtils.setParticleTimer(player, i+1);
 		players = null;
 	}
 

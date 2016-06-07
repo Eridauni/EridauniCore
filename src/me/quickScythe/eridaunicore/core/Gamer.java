@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class Gamer {
 	UUID uid;
@@ -31,7 +31,7 @@ public class Gamer {
 	public void addAchievement(Achievement achievement){
 		if(!hasAchievement(achievement)){
 			achievements.add(achievement);
-			Utils.addAchievement(Bukkit.getPlayer(uid), achievement);
+			CoreUtils.addAchievement(Bukkit.getPlayer(uid), achievement);
 		}
 		
 		
@@ -50,7 +50,7 @@ public class Gamer {
 		return achievements;
 	}
 	public void sendMessage(String message){
-		Bukkit.getPlayer(uid).sendMessage(Utils.colorize(message));
+		Bukkit.getPlayer(uid).sendMessage(CoreUtils.colorize(message));
 	}
 
 	public boolean isWalking() {

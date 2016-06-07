@@ -40,7 +40,7 @@ public class Main extends JavaPlugin {
 		new BlockListener(this);
 		new AnvilListener(this);
 		
-		Utils.start();
+		CoreUtils.start();
 		
 		
 		
@@ -48,7 +48,7 @@ public class Main extends JavaPlugin {
 	}
 	
 	public void onDisable(){
-		Utils.end();
+		CoreUtils.end();
 	}
 	
 	public static Main getPlugin(){

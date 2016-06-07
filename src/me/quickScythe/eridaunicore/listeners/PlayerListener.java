@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.util.Vector;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
@@ -36,12 +36,12 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){
 		PermissionUser player = PermissionsEx.getUser(e.getPlayer());
-		e.setJoinMessage(Utils.colorize(Utils.getPlayerDisplayName(player) + "&7 has joined."));
+		e.setJoinMessage(CoreUtils.colorize(CoreUtils.getPlayerDisplayName(player) + "&7 has joined."));
 	}
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e){
 		PermissionUser player = PermissionsEx.getUser(e.getPlayer());
-		e.setQuitMessage(Utils.colorize(Utils.getPlayerDisplayName(player) + "&7 has left."));
+		e.setQuitMessage(CoreUtils.colorize(CoreUtils.getPlayerDisplayName(player) + "&7 has left."));
 	}
 
 }

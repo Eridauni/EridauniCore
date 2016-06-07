@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import me.quickScythe.eridaunicore.Main;
 import me.quickScythe.eridaunicore.utils.IDatabase;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class UpdateCommand implements CommandExecutor {
 	Main plugin;
@@ -18,7 +18,7 @@ public class UpdateCommand implements CommandExecutor {
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(cmd.getName().equalsIgnoreCase("update")){
-			IDatabase sql = Utils.getConnection();
+			IDatabase sql = CoreUtils.getConnection();
 			String query = "";
 			for(int i=0;i!=args.length;i++){
 				query = query + " " + args[i];

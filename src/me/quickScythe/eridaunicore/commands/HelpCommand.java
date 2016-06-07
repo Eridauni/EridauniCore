@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.Utils;
+import me.quickScythe.eridaunicore.utils.CoreUtils;
 
 public class HelpCommand implements CommandExecutor {
 	Main plugin;
@@ -17,8 +17,8 @@ public class HelpCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("help")) {
-			sender.sendMessage(Utils.colorize("&e&lHelp &f>&7 If you need help please ask an Mod or higher, or submit a request with &f\"/request\"&7."));
-			sender.sendMessage(Utils.colorize("&e&lHelp &f>&7 Here's a list of color codes for you:\n&1&&11&2&&22&3&&33&4&&44&5&&55&6&&66&7&&77&8&&88&9&&99&0&&00&a&&aa&b&&bb&c&&cc&d&&dd&e&&ee&f&&ff"));
+			sender.sendMessage(CoreUtils.colorize("&e&lHelp &f>&7 If you need help please ask an Mod or higher, or submit a request with &f\"/request\"&7."));
+			sender.sendMessage(CoreUtils.colorize("&e&lHelp &f>&7 Here's a list of color codes for you:\n&1&&11&2&&22&3&&33&4&&44&5&&55&6&&66&7&&77&8&&88&9&&99&0&&00&a&&aa&b&&bb&c&&cc&d&&dd&e&&ee&f&&ff"));
 		}
 		return true;
 	}
