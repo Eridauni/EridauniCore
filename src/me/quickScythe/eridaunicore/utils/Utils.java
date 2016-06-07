@@ -98,29 +98,7 @@ public class Utils {
 		}
 		createGamers();
 		
-		ItemStack grenade = new ItemStack(Material.FIREWORK_CHARGE);
-		ItemMeta meta = grenade.getItemMeta();
-		meta.setDisplayName(colorize("&cGrenade"));
-		grenade.setItemMeta(meta);
 		
-		
-		
-		ShapedRecipe grecipe = new ShapedRecipe(grenade);
-	    grecipe.shape("XBX", 
-	    			 "BAB", 
-	    			 "XBX");
-	    grecipe.setIngredient('A', Material.FIREWORK_CHARGE);
-	    grecipe.setIngredient('B', Material.SULPHUR); 
-	    Bukkit.addRecipe(grecipe);
-	    
-	    ShapedRecipe erecipe = new ShapedRecipe(new ItemStack(Material.ELYTRA));
-	    grecipe.shape("DDD", 
-	    			  "FXF", 
-	    			  "FXF");
-	    grecipe.
-	    setIngredient('D', Material.DIAMOND).
-	    setIngredient('F', Material.FEATHER);
-	    Bukkit.addRecipe(erecipe);
 
 		Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lServer &f>&7 Hub enabled!")));
 
