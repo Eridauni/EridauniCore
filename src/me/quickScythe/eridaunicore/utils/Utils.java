@@ -105,13 +105,22 @@ public class Utils {
 		
 		
 		
-		ShapedRecipe recipe = new ShapedRecipe(grenade);
-	    recipe.shape("XBX", 
+		ShapedRecipe grecipe = new ShapedRecipe(grenade);
+	    grecipe.shape("XBX", 
 	    			 "BAB", 
 	    			 "XBX");
-	    recipe.setIngredient('A', Material.FIREWORK_CHARGE);
-	    recipe.setIngredient('B', Material.SULPHUR); 
-	    Bukkit.addRecipe(recipe);
+	    grecipe.setIngredient('A', Material.FIREWORK_CHARGE);
+	    grecipe.setIngredient('B', Material.SULPHUR); 
+	    Bukkit.addRecipe(grecipe);
+	    
+	    ShapedRecipe erecipe = new ShapedRecipe(new ItemStack(Material.ELYTRA));
+	    grecipe.shape("DDD", 
+	    			  "FXF", 
+	    			  "FXF");
+	    grecipe.
+	    setIngredient('D', Material.DIAMOND).
+	    setIngredient('F', Material.FEATHER);
+	    Bukkit.addRecipe(erecipe);
 
 		Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lServer &f>&7 Hub enabled!")));
 

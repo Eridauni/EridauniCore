@@ -22,6 +22,7 @@ public class Gamer {
 		SkullMeta meta = (SkullMeta) skull.getItemMeta();
 		meta.setOwner(Bukkit.getPlayer(uid).getName());
 		skull.setItemMeta(meta);
+		
 	}
 	
 	public Object getUUID() {

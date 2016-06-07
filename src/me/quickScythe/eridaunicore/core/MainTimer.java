@@ -31,7 +31,7 @@ public class MainTimer extends BukkitRunnable {
 		removeGrenades.clear();
 		
 		for(Player player : Bukkit.getOnlinePlayers()){
-			if(Utils.getWingedPlayers().contains(player.getUniqueId())){
+			if(Utils.getWingedPlayers().contains(player.getUniqueId()) && player.isFlying()){
 				Utils.displayWings(player);
 			}
 			if(player.hasPermission("vip.particles") && Utils.getParticle(player.getUniqueId()) != null && Utils.getParticleFormat(player) != null){
