@@ -89,7 +89,7 @@ public class CoreUtils {
 			spawn = new Location(Bukkit.getWorld(ds[0]), Float.parseFloat(ds[1]), Float.parseFloat(ds[2]),
 					Float.parseFloat(ds[3]), Float.parseFloat(ds[4]), Float.parseFloat(ds[5]));
 		} catch (NullPointerException ex) {
-			spawn = Bukkit.getWorld("world").getSpawnLocation();
+			spawn = Bukkit.getWorlds().get(0).getSpawnLocation();
 		}
 
 		updateAchievements();

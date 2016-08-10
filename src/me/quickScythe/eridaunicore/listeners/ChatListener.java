@@ -8,8 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.IDatabase;
 import me.quickScythe.eridaunicore.utils.CoreUtils;
+import me.quickScythe.eridaunicore.utils.IDatabase;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
