@@ -40,6 +40,7 @@ public class Main extends JavaPlugin {
 		new ChatListener(this);
 		new BlockListener(this);
 		new AnvilListener(this);
+		new SkyRingsListener(this);
 		
 		CoreUtils.start();
 		

@@ -17,7 +17,6 @@ import me.quickScythe.eridaunicore.Main;
 import me.quickScythe.eridaunicore.core.Anvil;
 import me.quickScythe.eridaunicore.utils.ParticleFormat;
 import me.quickScythe.eridaunicore.utils.CoreUtils;
-import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleProperty;
 
 
 public class FriendListener implements Listener {

@@ -3,13 +3,13 @@ package me.quickScythe.eridaunicore.utils.packets;
 import java.lang.reflect.Field;
 
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import net.minecraft.server.v1_9_R1.IChatBaseComponent;
-import net.minecraft.server.v1_9_R1.PacketPlayOutPlayerListHeaderFooter;
-import net.minecraft.server.v1_9_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_9_R1.PlayerConnection;
+import net.minecraft.server.v1_10_R1.IChatBaseComponent;
+import net.minecraft.server.v1_10_R1.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.v1_10_R1.PacketPlayOutTitle;
+import net.minecraft.server.v1_10_R1.PlayerConnection;
 
 public class TitleUtils {
   @Deprecated

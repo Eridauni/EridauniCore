@@ -1,16 +1,15 @@
 package me.quickScythe.eridaunicore.core;
 
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.packets.FakeAnvil;
-import net.minecraft.server.v1_9_R1.ChatMessage;
-import net.minecraft.server.v1_9_R1.EntityPlayer;
-import net.minecraft.server.v1_9_R1.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_10_R1.ChatMessage;
+import net.minecraft.server.v1_10_R1.EntityPlayer;
+import net.minecraft.server.v1_10_R1.PacketPlayOutOpenWindow;
  
 public class Anvil {
  

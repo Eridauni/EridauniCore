@@ -11,9 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import me.quickScythe.eridaunicore.Main;
-import me.quickScythe.eridaunicore.utils.ParticleFormat;
 import me.quickScythe.eridaunicore.utils.CoreUtils;
-import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleProperty;
+import me.quickScythe.eridaunicore.utils.ParticleFormat;
 
 
 public class ParticleListener implements Listener {
@@ -103,11 +102,11 @@ public class ParticleListener implements Listener {
 				default:
 					break;
 			}
-			if(CoreUtils.getParticle(e.getWhoClicked().getUniqueId()).hasProperty(ParticleProperty.COLORABLE)){
-				e.getWhoClicked().openInventory(CoreUtils.getParticleColorInventory((Player) e.getWhoClicked()));
-			} else {
+//			if(CoreUtils.getParticle(e.getWhoClicked().getUniqueId()).hasProperty(ParticleProperty.COLORABLE)){
+//				e.getWhoClicked().openInventory(CoreUtils.getParticleColorInventory((Player) e.getWhoClicked()));
+//			} else {
 				Bukkit.dispatchCommand(((Player) e.getWhoClicked()), "ParticleFormat");
-			}
+//			}
 			e.setCancelled(true);
 				
 			
@@ -115,13 +114,13 @@ public class ParticleListener implements Listener {
 			return;
 		}
 		if (ChatColor.stripColor(e.getInventory().getTitle()).equals("Particles (Page 2)")){
-			String m = e.getCurrentItem().getType().toString();
+			Material m = e.getCurrentItem().getType();
 			switch (m){
-			case "DIAMOND_SWORD":
+			case DIAMOND_SWORD:
 				Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particle CRIT_MAGIC");
 				e.getWhoClicked().closeInventory();
 				break;
-			case "STAINED_GLASS_PANE":
+			case STAINED_GLASS_PANE:
 				if(e.getCurrentItem().getDurability() != 10){
 					e.setCancelled(true);
 					return;
@@ -129,32 +128,36 @@ public class ParticleListener implements Listener {
 				Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particle PORTAL");
 				e.getWhoClicked().closeInventory();
 				break;
-			case "FLINT_AND_STEEL":
+			case FLINT_AND_STEEL:
 				Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particle LAVA");
 				e.getWhoClicked().closeInventory();
 				break;
-			case "SLIME_BALL":
+			case SLIME_BALL:
 				Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particle SLIME");
 				e.getWhoClicked().closeInventory();
 				break;
-			case "SNOW_BALL":
+			case SNOW_BALL:
 				Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particle SNOWBALL");
 				e.getWhoClicked().closeInventory();
 				break;
-			case "STONE":
+			case STONE:
 				Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particle FOOTSTEP");
 				e.getWhoClicked().closeInventory();
 				break;
+			case DRAGONS_BREATH:
+				Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particle DRAGON_BREATH");
+				e.getWhoClicked().closeInventory();
+				break;
 				
-			case "BARRIER":
+			case BARRIER:
 				Bukkit.dispatchCommand((Player) e.getWhoClicked(), "particle NULL");
 				e.getWhoClicked().closeInventory();
 				return;
-			case "REDSTONE_BLOCK":
+			case REDSTONE_BLOCK:
 				e.getWhoClicked().closeInventory();
 				return;
 					
-			case "ARROW":
+			case ARROW:
 				e.setCancelled(true);
 				((Player) e.getWhoClicked()).openInventory(CoreUtils.getParticleInventory(((Player) e.getWhoClicked())));
 				return;
@@ -162,11 +165,11 @@ public class ParticleListener implements Listener {
 					break;
 			}
 			
-			if(CoreUtils.getParticle(e.getWhoClicked().getUniqueId()).hasProperty(ParticleProperty.COLORABLE)){
-				e.getWhoClicked().openInventory(CoreUtils.getParticleColorInventory((Player) e.getWhoClicked()));
-			} else {
+//			if(CoreUtils.getParticle(e.getWhoClicked().getUniqueId()).hasProperty(ParticleProperty.COLORABLE)){
+//				e.getWhoClicked().openInventory(CoreUtils.getParticleColorInventory((Player) e.getWhoClicked()));
+//			} else {
 				Bukkit.dispatchCommand(((Player) e.getWhoClicked()), "ParticleFormat");
-			}
+//			}
 			e.setCancelled(true);
 				
 			

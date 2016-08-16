@@ -25,9 +25,20 @@ public class SpawnCommand implements CommandExecutor {
 					player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&lTeleport &f>&7 You have to been teleported to spawn."));
 				}
 				if(args.length == 1){
-					if(args[0].equalsIgnoreCase("set")){
+					if(args[0].equalsIgnoreCase("set") && sender.hasPermission("core.spawn.set")){
 						CoreUtils.setSpawn(((Player) sender).getLocation());
-						sender.sendMessage(CoreUtils.colorize("&e&lSpawn &f>&f You just set the spawn."));
+						sender.sendMessage(CoreUtils.colorize("&e&lSpawn &f>&7 You just set the spawn."));
+						return true;
+					}
+					
+					if(args[0].equalsIgnoreCase("setsky") && sender.hasPermission("core.skyrings.spawn.set")){
+						CoreUtils.setSkyRingsSpawn(((Player) sender).getLocation());
+						sender.sendMessage(CoreUtils.colorize("&e&lSkyRings &f>&7 You just set the &fSky Rings&7 spawn."));
+						return true;
+					}
+					
+					if(args[0].equalsIgnoreCase("sky") && sender.hasPermission("core.skyrings.command.spawn")){
+						((Player)sender).teleport(CoreUtils.getSkyRingsSpawn());
 						return true;
 					}
 					if(player.hasPermission("core.spawn.other")){

@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -33,17 +32,14 @@ import org.bukkit.scheduler.BukkitTask;
 
 import me.quickScythe.eridaunicore.Main;
 import me.quickScythe.eridaunicore.core.Achievement;
+import me.quickScythe.eridaunicore.core.FakeAnvil;
 import me.quickScythe.eridaunicore.core.Gamer;
 import me.quickScythe.eridaunicore.core.MainTimer;
-import me.quickScythe.eridaunicore.utils.packets.FakeAnvil;
 import me.quickScythe.eridaunicore.utils.packets.ParticleEffect;
-import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.NoteColor;
-import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.OrdinaryColor;
-import me.quickScythe.eridaunicore.utils.packets.ParticleEffect.ParticleProperty;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_9_R1.ContainerAnvil;
-import net.minecraft.server.v1_9_R1.EntityPlayer;
-import net.minecraft.server.v1_9_R1.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_10_R1.ContainerAnvil;
+import net.minecraft.server.v1_10_R1.EntityPlayer;
+import net.minecraft.server.v1_10_R1.PacketPlayOutOpenWindow;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
@@ -56,14 +52,16 @@ public class CoreUtils {
 	private static Map<UUID, Color> colors = new HashMap<>();
 	private static Map<UUID, Gamer> gamers = new HashMap<>();
 	private static Map<UUID, UUID> recents = new HashMap<>();
-	private static FileConfiguration playerFile = YamlConfiguration.loadConfiguration(new File(Main.getPlugin().getDataFolder(), "players.yml"));
-	
+	private static FileConfiguration playerFile = YamlConfiguration
+			.loadConfiguration(new File(Main.getPlugin().getDataFolder(), "players.yml"));
+
 	private static Location spawn;
+	private static Location skyringsspawn;
 	private static Map<UUID, ParticleFormat> particleformats = new HashMap<>();
 	private static Set<UUID> wings = new HashSet<>();
 	private static Map<String, Achievement> achievements = new HashMap<>();
-	private static Map<UUID, String> uuids= new HashMap<>();
-	private static Map<String, String> ipPlayers= new HashMap<>();
+	private static Map<UUID, String> uuids = new HashMap<>();
+	private static Map<String, String> ipPlayers = new HashMap<>();
 	private static Map<UUID, ArrayList<Achievement>> playerAchievements = new HashMap<>();
 	private static BukkitTask task;
 	public static int note = 0;
@@ -71,17 +69,16 @@ public class CoreUtils {
 	private static char[] alphebet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
 			'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
 			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-	
-	
+
 	public static void start() {
 		startMainTimer();
-		
+
 		connection = new IDatabase("db4free.net", "eridaunistats", 3306, "eridauniadmin", "password");
-		if(connection.init())
+		if (connection.init())
 			Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lSQL &f>&7 SQL connected...")));
-		else Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lSQL &f>&7 SQL not connected...")));
-		
-		
+		else
+			Main.getPlugin().getServer().getConsoleSender()
+					.sendMessage(colorize(("&e&lSQL &f>&7 SQL not connected...")));
 
 		try {
 			String encodedSpawn = Main.getPlugin().getConfig().getString("Spawn");
@@ -91,14 +88,21 @@ public class CoreUtils {
 		} catch (NullPointerException ex) {
 			spawn = Bukkit.getWorlds().get(0).getSpawnLocation();
 		}
+		
+		try {
+			String encodedSpawn = Main.getPlugin().getConfig().getString("SkyRingSpawn");
+			String[] ds = encodedSpawn.split(":");
+			skyringsspawn = new Location(Bukkit.getWorld(ds[0]), Float.parseFloat(ds[1]), Float.parseFloat(ds[2]),
+					Float.parseFloat(ds[3]), Float.parseFloat(ds[4]), Float.parseFloat(ds[5]));
+		} catch (NullPointerException ex) {
+			skyringsspawn = Bukkit.getWorlds().get(0).getSpawnLocation();
+		}
 
 		updateAchievements();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			loadAchievements(player);
 		}
 		createGamers();
-		
-		
 
 		Main.getPlugin().getServer().getConsoleSender().sendMessage(colorize(("&e&lServer &f>&7 Hub enabled!")));
 
@@ -111,23 +115,24 @@ public class CoreUtils {
 
 	public static void end() {
 		unloadAchievements();
-		
-		
+
 		String sspawn = spawn.getWorld().getName() + ":" + spawn.getX() + ":" + spawn.getY() + ":" + spawn.getZ() + ":"
 				+ spawn.getYaw() + ":" + spawn.getPitch();
 		Main.getPlugin().getConfig().set("Spawn", sspawn);
-		Main.getPlugin().saveConfig();
 		
-		for(Entry<UUID,String> entry : uuids.entrySet()){
-			playerFile.set(entry.getKey() +"", entry.getValue());
+		String ssspawn = skyringsspawn.getWorld().getName() + ":" + skyringsspawn.getX() + ":" + skyringsspawn.getY() + ":" + skyringsspawn.getZ() + ":"
+				+ skyringsspawn.getYaw() + ":" + skyringsspawn.getPitch();
+		Main.getPlugin().getConfig().set("SkyRingsSpawn", ssspawn);
+		
+		Main.getPlugin().saveConfig();
+
+		for (Entry<UUID, String> entry : uuids.entrySet()) {
+			playerFile.set(entry.getKey() + "", entry.getValue());
 		}
-		for(Entry<String,String> entry : ipPlayers.entrySet()){
-			playerFile.set(entry.getKey() +"", entry.getValue());
+		for (Entry<String, String> entry : ipPlayers.entrySet()) {
+			playerFile.set(entry.getKey() + "", entry.getValue());
 		}
 	}
-	
-	
-	
 
 	public static String colorize(String message) {
 		return ChatColor.translateAlternateColorCodes('&', message);
@@ -169,88 +174,82 @@ public class CoreUtils {
 		return new Location(location.getWorld(), x, location.getY(), z);
 
 	}
+
 	public static Location getCircleLocationBackwards(int i, Double width, Location location) {
 
-		double x = (double) (width * Math.cos((-1*(i + 16 - 31) * 11.25) * Math.PI / 180F)) + location.getX();
-		double z = (double) (width * Math.sin((-1*(i + 16 - 31) * 11.25) * Math.PI / 180F)) + location.getZ();
+		double x = (double) (width * Math.cos((-1 * (i + 16 - 31) * 11.25) * Math.PI / 180F)) + location.getX();
+		double z = (double) (width * Math.sin((-1 * (i + 16 - 31) * 11.25) * Math.PI / 180F)) + location.getZ();
 		return new Location(location.getWorld(), x, location.getY(), z);
 
 	}
 
 	public static void displayParticle(Player player, Location l, List<Player> players) {
-
-		
-
-		if (getParticle(player.getUniqueId()).hasProperty(ParticleProperty.COLORABLE)) {
-			if (getParticle(player.getUniqueId()).equals(ParticleEffect.NOTE)) {
-				Color color = Color.BLUE;
-				if(colors.containsKey(player.getUniqueId()))
-					color = colors.get(player.getUniqueId());
-				getParticle(player.getUniqueId()).display(new NoteColor(getNoteColor(color)), l, players);
-				return;
-			}
-				Color color = null;
-				if(RGBcolors.containsKey(player.getUniqueId())){
-					color = RGBcolors.get(player.getUniqueId());
-				}
-				if(colors.containsKey(player.getUniqueId())){
-					color = colors.get(player.getUniqueId());
-				}
-				
-				
-				int red = color.getRed();
-				int green = color.getGreen();
-				int blue = color.getBlue();
-				
-				if(red == 0) red = 1;
-				if(green == 0) green = 1;
-				if(blue == 0) blue = 1;
-				
-				if(color == null) getParticle(player.getUniqueId()).display(0, 0, 0, 1, 1, l, players);
-				else getParticle(player.getUniqueId()).display(new OrdinaryColor(red, green, blue), l, players);
-				return;
-
-			
-			
+//
+		Color color = null;
+//
+		if (RGBcolors.containsKey(player.getUniqueId())) {
+			color = RGBcolors.get(player.getUniqueId());
 		}
-		getParticle(player.getUniqueId()).display(0, 0, 0, 0, 1, l, players);
+		if (colors.containsKey(player.getUniqueId())) {
+			color = colors.get(player.getUniqueId());
+		}
+		int red;
+		int green;
+		int blue;
+
+		try{
+			red = color.getRed();
+			green = color.getGreen();
+			blue = color.getBlue();
+
+			if (red == 0)
+				red = 1;
+			if (green == 0)
+				green = 1;
+			if (blue == 0)
+				blue = 1;
+		} catch(NullPointerException ex){
+			red = 1;
+			green = 1;
+			blue = 1;
+		}
+		org.bukkit.Color bcolor = org.bukkit.Color.fromRGB(red, green, blue);
+//		getParticle(player.getUniqueId()).display(0, 0, 0, 1, 1, l, 1);
+//		getParticle(player.getUniqueId()).display(0,0,0,1,1, l, 30.0D);
+//		getParticle(player.getUniqueId()).dis
+		getParticle(player.getUniqueId()).display(null, l, bcolor, 30D, 0F, 0F, 0F, 0F, 1);
 	}
 
-	private static int getNoteColor(Color color) {
-		String ccolor = color.toString();
-		switch(ccolor){
-		case "red":
-			return 6;
-		case "orange":
-			return 8;
-		case "yellow":
-			return 7;
-		case "green": 
-			return 22;
-		case "blue":
-			return 0;
-		case "magenta":
-			return 5;
-			default:
-				return 0;
-			
-			
-			
-		}
-	}
+//	private static int getNoteColor(Color color) {
+//		String ccolor = color.toString();
+//		switch (ccolor) {
+//		case "red":
+//			return 6;
+//		case "orange":
+//			return 8;
+//		case "yellow":
+//			return 7;
+//		case "green":
+//			return 22;
+//		case "blue":
+//			return 0;
+//		case "magenta":
+//			return 5;
+//		default:
+//			return 0;
+//
+//		}
+//	}
 
 	public static ParticleEffect getParticle(UUID uuid) {
 		return particles.get(uuid);
 	}
 
-	
-	
-
 	public static void setParticleColor(Player player, Color color) {
 		RGBcolors.remove(player.getUniqueId());
 		colors.put(player.getUniqueId(), color);
 	}
-	
+
 	public static void setParticleRGBColor(Player player, String colorRGB) {
 		colors.remove(player.getUniqueId());
 		String[] values = colorRGB.split(" ");
@@ -279,11 +278,10 @@ public class CoreUtils {
 			return;
 		}
 
-		RGBcolors.put(player.getUniqueId(), new Color(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2])));
+		RGBcolors.put(player.getUniqueId(),
+				new Color(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2])));
 
 	}
-
-	
 
 	public static Gamer createNewGamer(Player player) {
 		if (!gamers.containsKey(player.getUniqueId())) {
@@ -371,6 +369,10 @@ public class CoreUtils {
 	public static void setSpawn(Location location) {
 		spawn = location;
 	}
+	
+	public static void setSkyRingsSpawn(Location location) {
+		skyringsspawn = location;
+	}
 
 	public static void toggleWings(Player player) {
 		player.closeInventory();
@@ -408,87 +410,65 @@ public class CoreUtils {
 		loc.add(0.0D, 1.8D, 0.0D);
 		loc.add(loc.getDirection().multiply(-0.2D));
 
-
-		Color ccolor = null;
-		if(colors.containsKey(player.getUniqueId()))
-			ccolor = colors.get(player.getUniqueId());
-		if(RGBcolors.containsKey(player.getUniqueId()))
-			ccolor = RGBcolors.get(player.getUniqueId());
-		
-		int red = 0;
-		int green = 0;
-		int blue = 0;
-		
-		if(ccolor == null){
-			red = new Random().nextInt(255);
-			green = new Random().nextInt(255);
-			blue = new Random().nextInt(255);
-		} else {
-			red = ccolor.getRed();
-			green = ccolor.getGreen();
-			blue = ccolor.getBlue();
-		}
-		
-		
-		
-		if(red == 0) red = 1;
-		if(green == 0) green = 1;
-		if(blue == 0) blue = 1;
-		
-		ParticleEffect.ParticleColor color = new OrdinaryColor(red, green, blue);
 		Location loc1R = loc.clone();
 		loc1R.setYaw(loc1R.getYaw() + 110.0F);
 		Location loc2R = loc1R.clone().add(loc1R.getDirection().multiply(1));
-		ParticleEffect.REDSTONE.display(color, loc2R.add(0.0D, 0.8D, 0.0D), 30.0D);
+		
+		
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc2R.add(0.0D, 0.8D, 0.0D), 30.0D);
 
 		Location loc3R = loc1R.clone().add(loc1R.getDirection().multiply(0.8D));
-		ParticleEffect.REDSTONE.display(color, loc3R.add(0.0D, 0.6D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc3R.add(0.0D, 0.6D, 0.0D), 30.0D);
 		Location loc4R = loc1R.clone().add(loc1R.getDirection().multiply(0.6D));
-		ParticleEffect.REDSTONE.display(color, loc4R.add(0.0D, 0.4D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc4R.add(0.0D, 0.4D, 0.0D), 30.0D);
 		Location loc5R = loc1R.clone().add(loc1R.getDirection().multiply(0.4D));
-		ParticleEffect.REDSTONE.display(color, loc5R.clone().add(0.0D, -0.2D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc5R.clone().add(0.0D, -0.2D, 0.0D), 30.0D);
 		Location loc6R = loc1R.clone().add(loc1R.getDirection().multiply(0.2D));
-		ParticleEffect.REDSTONE.display(color, loc6R.add(0.0D, -0.2D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc6R.add(0.0D, -0.2D, 0.0D), 30.0D);
 
 		int zu = 0;
 		while (zu <= 3) {
 			zu++;
 
-			ParticleEffect.REDSTONE.display(color, loc2R.add(0.0D, -0.2D, 0.0D), 30.0D);
-			ParticleEffect.REDSTONE.display(color, loc3R.add(0.0D, -0.2D, 0.0D), 30.0D);
-			ParticleEffect.REDSTONE.display(color, loc4R.add(0.0D, -0.2D, 0.0D), 30.0D);
-			ParticleEffect.REDSTONE.display(color, loc5R.add(0.0D, -0.2D, 0.0D), 30.0D);
-			ParticleEffect.REDSTONE.display(color, loc6R.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc2R.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc3R.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc4R.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc5R.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc6R.add(0.0D, -0.2D, 0.0D), 30.0D);
 		}
 
 		Location loc1L = loc.clone();
 		loc1L.setYaw(loc1L.getYaw() - 110.0F);
 		Location loc2L = loc1L.clone().add(loc1L.getDirection().multiply(1));
-		ParticleEffect.REDSTONE.display(color, loc2L.add(0.0D, 0.8D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc2L.add(0.0D, 0.8D, 0.0D), 30.0D);
 
 		Location loc3L = loc1L.clone().add(loc1L.getDirection().multiply(0.8D));
-		ParticleEffect.REDSTONE.display(color, loc3L.add(0.0D, 0.6D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc3L.add(0.0D, 0.6D, 0.0D), 30.0D);
 		Location loc4L = loc1L.clone().add(loc1L.getDirection().multiply(0.6D));
-		ParticleEffect.REDSTONE.display(color, loc4L.add(0.0D, 0.4D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc4L.add(0.0D, 0.4D, 0.0D), 30.0D);
 		Location loc5L = loc1L.clone().add(loc1L.getDirection().multiply(0.4D));
-		ParticleEffect.REDSTONE.display(color, loc5L.clone().add(0.0D, -0.2D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc5L.clone().add(0.0D, -0.2D, 0.0D), 30.0D);
 		Location loc6L = loc1L.clone().add(loc1L.getDirection().multiply(0.2D));
-		ParticleEffect.REDSTONE.display(color, loc6L.add(0.0D, -0.2D, 0.0D), 30.0D);
+		ParticleEffect.REDSTONE.display(0,0,0,1,1, loc6L.add(0.0D, -0.2D, 0.0D), 30.0D);
 
 		zu = 0;
 
 		while (zu <= 3) {
 			zu++;
 
-			ParticleEffect.REDSTONE.display(color, loc2L.add(0.0D, -0.2D, 0.0D), 30.0D);
-			ParticleEffect.REDSTONE.display(color, loc3L.add(0.0D, -0.2D, 0.0D), 30.0D);
-			ParticleEffect.REDSTONE.display(color, loc4L.add(0.0D, -0.2D, 0.0D), 30.0D);
-			ParticleEffect.REDSTONE.display(color, loc5L.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc2L.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc3L.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc4L.add(0.0D, -0.2D, 0.0D), 30.0D);
+			ParticleEffect.REDSTONE.display(0,0,0,1,1, loc5L.add(0.0D, -0.2D, 0.0D), 30.0D);
 		}
 	}
 
 	public static Location getSpawn() {
 		return spawn;
+	}
+	
+	public static Location getSkyRingsSpawn() {
+		return skyringsspawn;
 	}
 
 	public static Inventory getParticleInventory(Player player) {
@@ -513,11 +493,8 @@ public class CoreUtils {
 
 		inv.addItem(new ItemStack(Material.ARROW), "&7Next Page ->", 'Y', null, (short) 0);
 
-		inv.setConfiguration(new char[] { 
-				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
-				'X', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'X',
-				'X', 'O', 'H', 'I', 'J', 'K', 'L', 'P', 'X',
-				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'B', 'C', 'D', 'E',
+				'F', 'G', 'X', 'X', 'O', 'H', 'I', 'J', 'K', 'L', 'P', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
 				'X', 'X', 'X', 'M', 'X', 'N', 'X', 'Y', 'X',
 
 		});
@@ -538,9 +515,14 @@ public class CoreUtils {
 		inv.addItem(new ItemStack(Material.SLIME_BALL), "&a&lSlime Poof", '4', null, (short) 0);
 		inv.addItem(new ItemStack(Material.SNOW_BALL), "&f&lSnow Poof", '5', null, (short) 0);
 		inv.addItem(new ItemStack(Material.STONE), "&7&lFoot Print", '6', null, (short) 0);
+		inv.addItem(new ItemStack(Material.DRAGONS_BREATH), "&5&lDragon Fire", '7', null, (short) 0);
+		
 
-		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '1', '2', '3', '4', '5',
-				'6', 'Z', 'X', 'X', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+		inv.setConfiguration(new char[] { 
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+				'X', '1', '2', '3', '4', '5', '6', '7', 'X',
+				'X', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'Z', 'X',
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
 				'X', 'Y', 'X', 'M', 'X', 'N', 'X', 'X', 'X',
 
 		});
@@ -573,14 +555,12 @@ public class CoreUtils {
 		inv.addItem(new ItemStack(Material.REDSTONE), "&c&lBlood Helix", 'I', null, (short) 0);
 		inv.addItem(new ItemStack(Material.SNOW_BALL), "&e&lShpere", 'J', null, (short) 0);
 		inv.addItem(new ItemStack(Material.SHIELD), "&c&lForcefield", 'K', null, (short) 0);
-		
-		inv.addItem(getGamer(player).getSkull(), "&a&lCircle Player", 'L', new String[] {"&7Suggested by &oLord_Hyperion&7."}, (short) 3);
 
-		inv.setConfiguration(new char[] { 
-				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
-				'X', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'X',
-				'X', 'X', 'I', 'H', 'L', 'J', 'K', 'X', 'X',
-				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
+		inv.addItem(getGamer(player).getSkull(), "&a&lCircle Player", 'L',
+				new String[] { "&7Suggested by &oLord_Hyperion&7." }, (short) 3);
+
+		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'B', 'C', 'D', 'E',
+				'F', 'G', 'X', 'X', 'X', 'I', 'H', 'L', 'J', 'K', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'
 
 		});
 		return inv.getInventory();
@@ -683,14 +663,13 @@ public class CoreUtils {
 		// Create the AnvilContainer
 		ContainerAnvil container = new FakeAnvil(p);
 
-		if(inventory != null){
+		if (inventory != null) {
 			// Set the items to the items from the inventory given
 			container.getBukkitView().getTopInventory().setItem(0, inventory.getItem(0));
 			container.getBukkitView().getTopInventory().setItem(1, inventory.getItem(1));
 			// container.getBukkitView().getTopInventory().setItem(2,
 			// inventory.getItem(2));
 		}
-		
 
 		// Counter stuff that the game uses to keep track of inventories
 		int c = p.nextContainerCounter();
@@ -720,35 +699,40 @@ public class CoreUtils {
 
 	public static String checkAddress(InetAddress address) {
 		String ip = address.toString().replaceFirst("/", "").split(":")[0];
-		try{
+		try {
 			ResultSet set = connection.query("SELECT NAME FROM Users WHERE IP='" + ip + "'");
 			set.next();
-			if(set.getObject(1) == null) return "NO";
-			else return "YES";
-		}catch(Exception ex){
+			if (set.getObject(1) == null)
+				return "NO";
+			else
+				return "YES";
+		} catch (Exception ex) {
 			return "NO";
 		}
-		
+
 	}
-	
+
 	public static String getPlayerFromAddress(InetAddress address) {
 		String ip = address.toString().replaceFirst("/", "").split(":")[0];
-		try{
+		try {
 			ResultSet set = connection.query("SELECT NAME FROM Users WHERE IP='" + ip + "'");
 			set.next();
 			return ((String) set.getObject(1));
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			return "N/A";
 		}
 	}
 
 	public static void cachePlayer(Player player) {
 		IDatabase sql = getConnection();
-		int r = sql.update("UPDATE Users SET UUID='" + player.getUniqueId() + "',COIN=" + getCoins(player) + ",FRIENDS='" + getFriends(player) + "',NAME='" + player.getName() + "',IP='" + getPlayerAddress(player) + "' WHERE UUID='" + player.getUniqueId() +"'");
-		
-		if(r <= 0){
-			sql.update("INSERT INTO Users (UUID,COIN,FRIENDS,NAME,IP) VALUES ('" + player.getUniqueId() + "',0,'','" + player.getName() + "','" + getPlayerAddress(player) + "')");
-		
+		int r = sql.update("UPDATE Users SET UUID='" + player.getUniqueId() + "',COIN=" + getCoins(player)
+				+ ",FRIENDS='" + getFriends(player) + "',NAME='" + player.getName() + "',IP='"
+				+ getPlayerAddress(player) + "' WHERE UUID='" + player.getUniqueId() + "'");
+
+		if (r <= 0) {
+			sql.update("INSERT INTO Users (UUID,COIN,FRIENDS,NAME,IP) VALUES ('" + player.getUniqueId() + "',0,'','"
+					+ player.getName() + "','" + getPlayerAddress(player) + "')");
+
 		}
 	}
 
@@ -765,13 +749,13 @@ public class CoreUtils {
 		} catch (Exception e) {
 			return "";
 		}
-		
+
 	}
 
 	public static Object getCoins(Player player) {
 		try {
 			ResultSet set = connection.query("SELECT COINS FROM Users WHERE UUID='?'", player.getUniqueId());
-		
+
 			return set.getObject(1);
 		} catch (Exception e) {
 			return 0;
@@ -781,21 +765,17 @@ public class CoreUtils {
 	public static IDatabase getConnection() {
 		return connection;
 	}
-	
-	public static void openFriendMenu(Player player){
+
+	public static void openFriendMenu(Player player) {
 		InventoryCreator inv = new InventoryCreator("&1&lFriend Menu", player, 27);
-		
+
 		inv.addItem(new ItemStack(Material.SKULL_ITEM), "&a&lAdd Friend", 'A', null, (short) 3);
 		inv.addItem(new ItemStack(Material.PAPER), "&3&lShow All Friends", 'B', null, (short) 0);
 		inv.addItem(new ItemStack(Material.BARRIER), "&c&lRemove Friend", 'C', null, (short) 0);
-		
 
 		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&Click an option.", 'X', null, (short) 0);
-		char[] config = new char[]{
-				'X','X','X','X','X','X','X','X','X',
-				'X','A','X','X','B','X','X','C','X',
-				'X','X','X','X','X','X','X','X','X'
-		};
+		char[] config = new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'X', 'X', 'B', 'X', 'X',
+				'C', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' };
 		inv.setConfiguration(config);
 		player.openInventory(inv.getInventory());
 	}
@@ -807,17 +787,17 @@ public class CoreUtils {
 				new String[] { "&7Nothing here yet. Check back layer. :-)" }, (short) 0);
 		int i = 1;
 		ArrayList<Character> storage = new ArrayList<>();
-		
+
 		String[] friends = getFriends(player).split(",");
-		for(String f : friends){
+		for (String f : friends) {
 			ItemStack head = new ItemStack(Material.SKULL_ITEM);
 			SkullMeta meta = (SkullMeta) head.getItemMeta();
 			meta.setOwner(f);
 			head.setItemMeta(meta);
 			inv.addItem(head, "&e&l" + f, getAlphebet(i), null, (short) 3);
 			storage.add(getAlphebet(i));
-			i=i+1;
-			}
+			i = i + 1;
+		}
 		if (i < 45)
 			for (int ii = 0; ii != 46 - i;) {
 				storage.add('X');
@@ -830,53 +810,67 @@ public class CoreUtils {
 	public static String getPlayerDisplayName(PermissionUser player) {
 		return colorize(player.getPrefix() + player.getName());
 	}
+
 	public static String getPlayerDisplayName(Player player) {
 		PermissionUser user = PermissionsEx.getUser(player);
 		return colorize(user.getPrefix() + user.getName());
 	}
 
 	public static void openHouseMenu(Player player) {
-		
+
 		InventoryCreator inv = new InventoryCreator(colorize("&6House Menu"), player, 27);
-		
+
 		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&7Click Option", 'X', null, (short) 15);
-		
+
 		inv.addItem(new ItemStack(Material.SIGN), "&eMake House", 'A', null, (short) 0);
 		inv.addItem(new ItemStack(Material.DIAMOND), "&cUpgrade House", 'B', null, (short) 0);
 		inv.addItem(new ItemStack(Material.BARRIER), "&4&lClose", 'Z', null, (short) 0);
-		
-		
-		inv.setConfiguration(new char[]{
-				'X','X','X','X','X','X','X','X','X',
-				'X','A','X','X','X','X','X','B','X',
-				'X','X','X','X','Z','X','X','X','X'
-		});
-		
+
+		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'X', 'X', 'X', 'X',
+				'X', 'B', 'X', 'X', 'X', 'X', 'X', 'Z', 'X', 'X', 'X', 'X' });
+
 		player.openInventory(inv.getInventory());
 	}
 
 	public static void registerHouse(Player player) {
-//		if(getConnection().init()){
-//			getConnection().update("")
-//		}
+		// if(getConnection().init()){
+		// getConnection().update("")
+		// }
 	}
-	
-	public static Firework createFirework(Location location, FireworkEffect ef){
-		
+
+	public static Firework createFirework(Location location, FireworkEffect ef) {
+
 		Firework f = location.getWorld().spawn(location, Firework.class);
-		
+
 		FireworkMeta fw = f.getFireworkMeta();
-		
+
 		fw.clearEffects();
-		
+
 		fw.addEffect(ef);
-		
+
 		f.setFireworkMeta(fw);
 		return f;
-		
+
+	}
+
+	public static void openSkyRingMenu(Player player) {
+
+		InventoryCreator inv = new InventoryCreator(colorize("&c&lTravel to Sky Rings?"), player, 27);
+
+		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&7Click Option", 'X', null, (short) 8);
+
+		inv.addItem(new ItemStack(Material.EMERALD), "&a&lYes", 'A', new String[] {"&a&lTake me to SkyRings!"}, (short) 0);
+		inv.addItem(new ItemStack(Material.INK_SACK), "&c&lNo", 'B', new String[] {"&c&lI want to stay here!"}, (short) 1);
+
+		inv.setConfiguration(new char[] { 
+				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+				'X', 'A', 'X', 'X', 'X', 'X', 'X', 'B', 'X',
+				'X', 'X', 'X', 'X', 'Z', 'X', 'X', 'X', 'X' 
+		});
+
+		player.openInventory(inv.getInventory());
 	}
 
 	
-	
-	
+
 }

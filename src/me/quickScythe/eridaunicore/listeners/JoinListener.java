@@ -13,11 +13,6 @@ public class JoinListener implements Listener {
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent e){
-		e.setJoinMessage(CoreUtils.getPlayerDisplayName(e.getPlayer()) + " &7has joined.");
-		CoreUtils.cachePlayer(e.getPlayer());
-	}
-	
+		
 	
 }
