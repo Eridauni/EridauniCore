@@ -1,5 +1,11 @@
 package me.quickScythe.eridaunicore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.quickScythe.eridaunicore.commands.*;
@@ -9,9 +15,27 @@ import me.quickScythe.eridaunicore.utils.*;
 public class Main extends JavaPlugin {
 	
 	static Main plugin;
+	public int announcecooldown = 0;
+	public int announcement = 1;
+	public Map<Integer, List<String>> announcements = new HashMap<>();
+	public List<Grenade> grenades = new ArrayList<>();
+	public List<Grenade> removeGrenades = new ArrayList<>();
 	
 	public void onEnable(){
 		plugin = this;
+		
+		Bukkit.broadcastMessage("1");
+
+		List<String> a = new ArrayList<>();
+		
+		a.add("&e-------[Announcement]-------");
+		a.add("&fCome join our Plug.dj at");
+		a.add("&fhttps://plug.dj/eridauni");
+		a.add("&e----------------------------");
+		
+		announcements.put(1, a);
+		
+		a = null;
 		
 		new AchievementCommand(this, "achievement");
 		new HelpCommand(this, "help");

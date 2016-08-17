@@ -71,6 +71,7 @@ public class CoreUtils {
 			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
 	public static void start() {
+		Bukkit.broadcastMessage("2");
 		startMainTimer();
 
 		connection = new IDatabase("db4free.net", "eridaunistats", 3306, "eridauniadmin", "password");
@@ -579,7 +580,9 @@ public class CoreUtils {
 
 	@SuppressWarnings("deprecation")
 	public static void startMainTimer() {
-		task = Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), new MainTimer(), 1, 1);
+		Bukkit.broadcastMessage("3");
+		task = Bukkit.getScheduler().runTask(Main.getPlugin(), new MainTimer());
+		Bukkit.broadcastMessage("6");
 	}
 
 	public static void stopMainTimer() {
