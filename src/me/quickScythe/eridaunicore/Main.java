@@ -18,24 +18,35 @@ public class Main extends JavaPlugin {
 	public int announcecooldown = 0;
 	public int announcement = 1;
 	public Map<Integer, List<String>> announcements = new HashMap<>();
-	public List<Grenade> grenades = new ArrayList<>();
-	public List<Grenade> removeGrenades = new ArrayList<>();
+	
 	
 	public void onEnable(){
 		plugin = this;
 		
-		Bukkit.broadcastMessage("1");
+//		Bukkit.broadcastMessage("1");
 
 		List<String> a = new ArrayList<>();
 		
 		a.add("&e-------[Announcement]-------");
 		a.add("&fCome join our Plug.dj at");
-		a.add("&fhttps://plug.dj/eridauni");
+		a.add("&f&nhttps://plug.dj/eridauni");
 		a.add("&e----------------------------");
 		
 		announcements.put(1, a);
 		
+		List<String> b = new ArrayList<>();
+		
+		b.add("&e-------[Announcement]-------");
+		b.add("&fDon't forget to report any");
+		b.add("&fbugs to staff. :-)");
+		b.add("&e----------------------------");
+		
+		announcements.put(2, b);
+		
+		
+		
 		a = null;
+		b = null;
 		
 		new AchievementCommand(this, "achievement");
 		new HelpCommand(this, "help");
