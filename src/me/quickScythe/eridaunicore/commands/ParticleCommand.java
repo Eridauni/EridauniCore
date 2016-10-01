@@ -16,7 +16,7 @@ public class ParticleCommand implements CommandExecutor {
 		plugin.getCommand(cmd).setExecutor(this);
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-		if(cmd.getName().equalsIgnoreCase("particle") && sender.hasPermission("vip.particle") && sender instanceof Player){
+		if(cmd.getName().equalsIgnoreCase("particle") && sender instanceof Player){
 			if(args.length == 1){
 				if(!((Player) sender).hasPermission("vip.particle."+ args[0].toLowerCase())){
 					sender.sendMessage(CoreUtils.colorize("&e&lParticle &f>&7 You don't have permissions to use that particle."));

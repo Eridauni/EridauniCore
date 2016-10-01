@@ -480,25 +480,43 @@ public class CoreUtils {
 	public static Inventory getParticleInventory(Player player) {
 		InventoryCreator inv = new InventoryCreator("&6Particles &7(Page 1)", player, 45);
 		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&7Click an effect.", 'X', null, (short) 0);
-		inv.addItem(new ItemStack(Material.CAULDRON_ITEM), "&5&lWitch Magic", 'A', null, (short) 0);
-		inv.addItem(new ItemStack(Material.FIREBALL), "&6&lFlame", 'B', null, (short) 0);
-		inv.addItem(new ItemStack(Material.NETHER_STAR), "&f&lSparks", 'C', null, (short) 0);
-		inv.addItem(new ItemStack(Material.SNOW_BLOCK), "&f&lCloud", 'D', null, (short) 0);
-		inv.addItem(new ItemStack(Material.REDSTONE), "&c&lRedstone Dust", 'E', null, (short) 0);
-		inv.addItem(new ItemStack(Material.RECORD_9), "&3&lNotes", 'F', null, (short) 0);
-		inv.addItem(new ItemStack(Material.WATER_BUCKET), "&1&lWater Drip", 'G', null, (short) 0);
-		inv.addItem(new ItemStack(Material.EMERALD), "&a&lGreen Tinkle", 'H', null, (short) 0);
-		inv.addItem(new ItemStack(Material.PAPER), "&7&lAncient Ruins", 'I', null, (short) 0);
-		inv.addItem(new ItemStack(Material.NAME_TAG), "&c&lLove! <3", 'J', null, (short) 0);
-		inv.addItem(new ItemStack(Material.COAL), "&8&lStorm Cloud", 'K', null, (short) 0);
-		inv.addItem(new ItemStack(Material.LAVA_BUCKET), "&6&lLava Drip", 'L', null, (short) 0);
+		
+		if(player.hasPermission("vip.particle.spellwitch"))inv.addItem(new ItemStack(Material.CAULDRON_ITEM), "&5&lWitch Magic", 'A', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lWitch Magic", 'A', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.flame"))inv.addItem(new ItemStack(Material.FIREBALL), "&6&lFlame", 'B', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lFlame", 'B', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.fireworksspark"))inv.addItem(new ItemStack(Material.NETHER_STAR), "&f&lSparks", 'C', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lSparks", 'C', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.cloud"))inv.addItem(new ItemStack(Material.SNOW_BLOCK), "&f&lCloud", 'D', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lCloud", 'D', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.redstone"))inv.addItem(new ItemStack(Material.REDSTONE), "&c&lRedstone Dust", 'E', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lRedstone Dust", 'E', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.note"))inv.addItem(new ItemStack(Material.RECORD_9), "&3&lNotes", 'F', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lNotes", 'F', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.dripwater"))inv.addItem(new ItemStack(Material.WATER_BUCKET), "&1&lWater Drip", 'G', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lWater Drip", 'G', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.villagerhappy"))inv.addItem(new ItemStack(Material.EMERALD), "&a&lGreen Tinkle", 'H', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lGreen Tinkle", 'H', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.enchantmenttable"))inv.addItem(new ItemStack(Material.PAPER), "&7&lAncient Ruins", 'I', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lAncient Ruins", 'I', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.heart"))inv.addItem(new ItemStack(Material.NAME_TAG), "&c&lLove! <3", 'J', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lLove! <3", 'J', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.villagerangry"))inv.addItem(new ItemStack(Material.COAL), "&8&lStorm Cloud", 'K', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lStorm Cloud", 'K', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.driplava"))inv.addItem(new ItemStack(Material.LAVA_BUCKET), "&6&lLava Drip", 'L', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lLava Drip", 'L', new String[] {"&c&lVIP Exclusive"}, (short) 15);
 		inv.addItem(new ItemStack(Material.BARRIER), "&4Remove Trail", 'M', null, (short) 0);
-		inv.addItem(new ItemStack(Material.REDSTONE_BLOCK), "&4Exit", 'N', null, (short) 0);
-		inv.addItem(new ItemStack(Material.TNT), "&c&lExplosion", 'O', null, (short) 0);
-		inv.addItem(new ItemStack(Material.GOLD_SWORD), "&e&lCrit", 'P', null, (short) 0);
-
+		
+		
+		
+		if(player.hasPermission("vip.particle.explosionnormal"))inv.addItem(new ItemStack(Material.TNT), "&c&lExplosion", 'O', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&c&lExplosion", 'O', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.particlename"))inv.addItem(new ItemStack(Material.GOLD_SWORD), "&e&lCrit", 'P', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lCrit", 'P', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		
 		inv.addItem(new ItemStack(Material.ARROW), "&7Next Page ->", 'Y', null, (short) 0);
 
+		inv.addItem(new ItemStack(Material.REDSTONE_BLOCK), "&4Exit", 'N', null, (short) 0);
 		inv.setConfiguration(new char[] { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'A', 'B', 'C', 'D', 'E',
 				'F', 'G', 'X', 'X', 'O', 'H', 'I', 'J', 'K', 'L', 'P', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
 				'X', 'X', 'X', 'M', 'X', 'N', 'X', 'Y', 'X',
@@ -515,14 +533,21 @@ public class CoreUtils {
 		inv.addItem(new ItemStack(Material.REDSTONE_BLOCK), "&4Exit", 'N', null, (short) 0);
 		inv.addItem(new ItemStack(Material.ARROW), "&7<- Go Back", 'Y', null, (short) 0);
 
-		inv.addItem(new ItemStack(Material.DIAMOND_SWORD), "&3&lMagic Crit", '1', null, (short) 0);
-		inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&5&lPortal", '2', null, (short) 10);
-		inv.addItem(new ItemStack(Material.FLINT_AND_STEEL), "&c&lHot Sparks", '3', null, (short) 0);
-		inv.addItem(new ItemStack(Material.SLIME_BALL), "&a&lSlime Poof", '4', null, (short) 0);
-		inv.addItem(new ItemStack(Material.SNOW_BALL), "&f&lSnow Poof", '5', null, (short) 0);
-		inv.addItem(new ItemStack(Material.STONE), "&7&lFoot Print", '6', null, (short) 0);
-		inv.addItem(new ItemStack(Material.DRAGONS_BREATH), "&5&lDragon Fire", '7', null, (short) 0);
 		
+		if(player.hasPermission("vip.particle.critmagic"))inv.addItem(new ItemStack(Material.DIAMOND_SWORD), "&3&lMagic Crit", '1', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lMagic Crit", '1', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.portal"))inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&5&lPortal", '2', null, (short) 10);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lPortal", '2', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.lava"))inv.addItem(new ItemStack(Material.FLINT_AND_STEEL), "&c&lHot Sparks", '3', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lHot Sparks", '3', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.slime"))inv.addItem(new ItemStack(Material.SLIME_BALL), "&a&lSlime Poof", '4', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lSlime Poof", '4', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.snowball"))inv.addItem(new ItemStack(Material.SNOW_BALL), "&f&lSnow Poof", '5', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lSnow Poof", '5', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.footstep"))inv.addItem(new ItemStack(Material.STONE), "&7&lFoot Print", '6', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&e&lFoot Print", '6', new String[] {"&c&lVIP Exclusive"}, (short) 15);
+		if(player.hasPermission("vip.particle.dragonbreath"))inv.addItem(new ItemStack(Material.DRAGONS_BREATH), "&5&lDragon Fire", '7', null, (short) 0);
+		else inv.addItem(new ItemStack(Material.STAINED_GLASS_PANE), "&5&lDragon Breath", '7', new String[] {"&6&lAdmin Exclusive"}, (short) 15);
 
 		inv.setConfiguration(new char[] { 
 				'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
