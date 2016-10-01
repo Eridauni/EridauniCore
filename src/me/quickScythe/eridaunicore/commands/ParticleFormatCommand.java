@@ -18,7 +18,7 @@ public class ParticleFormatCommand implements CommandExecutor {
 		if(cmd.getName().equalsIgnoreCase("particleformat") && sender.hasPermission("vip.particle") && sender instanceof Player){
 			((Player) sender).openInventory(CoreUtils.getParticleFormatInventory(((Player) sender)));
 		}
-		if(!sender.hasPermission("vip.particle")) sender.sendMessage(CoreUtils.colorize("&e&lParticle &f>&7 Sorry, but you don't have the permission to do that."));
+		if(!sender.hasPermission("vip.particle")) sender.sendMessage(CoreUtils.colorize("&e&lParticle &f>&7 Sorry, but you don't have the permission to do that. \"vip.particle\""));
 		return true;	
 	}
 }

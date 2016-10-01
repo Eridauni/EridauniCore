@@ -55,7 +55,7 @@ public class MainTimer extends BukkitRunnable {
 			if(CoreUtils.getWingedPlayers().contains(player.getUniqueId()) && player.isFlying()){
 				CoreUtils.displayWings(player);
 			}
-			if(player.hasPermission("vip.particles") && CoreUtils.getParticle(player.getUniqueId()) != null && CoreUtils.getParticleFormat(player) != null){
+			if(player.hasPermission("vip.particle") && CoreUtils.getParticle(player.getUniqueId()) != null && CoreUtils.getParticleFormat(player) != null){
 //				Bukkit.broadcastMessage(player.getVelocity().length() +"");
 				CoreUtils.getParticleFormat(player).run(player);
 			}
